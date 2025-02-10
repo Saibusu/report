@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>範例</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    #timer {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .scoreboard {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+  <script>
+    let timerInterval;
+    let timerSeconds = 0;
+
+    function startTimer() {
+      timerInterval = setInterval(function () {
+        timerSeconds++;
+        const minutes = Math.floor(timerSeconds / 60);
+        const seconds = timerSeconds % 60;
+        document.getElementById('timer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+  </script>
+</head>
+<body onload="startTimer()" class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center py-10">
+  <h1 class="text-3xl font-bold mb-5">解答區</h1>
+
+  <div class="w-full max-w-5xl bg-white shadow-md rounded p-6">
+    <div class="scoreboard mb-5">
+      <div id="timer" class="text-red-600">00:00</div>
+      <div id="score" class="text-green-600 font-bold">Score: <span>0</span></div>
+    </div>
+
+    <form action="submit_code.php" method="POST" onsubmit="stopTimer();" class="w-full">
+      <label for="code" class="block text-gray-700 text-lg font-bold mb-2">請撰寫程式碼:</label>
+      <textarea id="code" name="code" rows="8" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"></textarea>
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">提交答案</button>
+    </form>
+  </div>
+
+  <div class="w-full max-w-5xl bg-white shadow-md rounded p-6 mt-6">
+    <h2 class="text-xl font-bold mb-4">結果輸出:</h2>
+    <div id="result-output" class="bg-gray-100 p-4 rounded mb-4">
+      <?php
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+          $code = $_POST['code'];
+
+          // Save and execute the code (assuming sandboxing)
+          file_put_contents("user_code.php", $code);
+          ob_start();
+          include "user_code.php";
+          $output = ob_get_clean();
+          echo nl2br(htmlspecialchars($output));
+
+          // Store execution results in MySQL
+          $conn = new mysqli("localhost", "root", "", "code_results");
+          if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+          }
+          $stmt = $conn->prepare("INSERT INTO results (code, output) VALUES (?, ?)");
+          $stmt->bind_param("ss", $code, $output);
+          $stmt->execute();
+          $stmt->close();
+          $conn->close();
+        }
+      ?>
+    </div>
+
+    <h2 class="text-xl font-bold mb-4">比對區:</h2>
+    <div class="bg-gray-100 p-4 rounded">
+      <p>預期輸出: <code>Hello, World!</code></p>
+      <p>你的輸出: <code><?php echo isset($output) ? htmlspecialchars($output) : ''; ?></code></p>
+      <p>Score: <strong><?php
+        if (isset($output)) {
+          $score = trim($output) == "Hello, World!" ? 100 : 0;
+          echo $score;
+          echo "<script>document.querySelector('#score span').textContent = $score;</script>";
+        }
+      ?></strong></p>
+    </div>
+  </div>
+
+  <div class="w-full max-w-5xl bg-white shadow-md rounded p-6 mt-6">
+    <h2 class="text-xl font-bold mb-4">Submission History:</h2>
+    <div class="bg-gray-100 p-4 rounded">
+      <?php
+      // Fetch submission history from the database
+      $conn = new mysqli("localhost", "root", "", "code_results");
+      if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+      }
+      $result = $conn->query("SELECT id, code, output, submitted_at FROM results ORDER BY submitted_at DESC LIMIT 10");
+
+      while ($row = $result->fetch_assoc()) {
+        echo "<p><strong>Submitted At:</strong> " . $row['submitted_at'] . "</p>";
+        echo "<p><strong>Code:</strong> <pre class='bg-gray-200 p-2 rounded'>" . htmlspecialchars($row['code']) . "</pre></p>";
+        echo "<p><strong>Output:</strong> <pre class='bg-gray-200 p-2 rounded'>" . htmlspecialchars($row['output']) . "</pre></p><hr>";
+      }
+      $conn->close();
+      ?>
+    </div>
+  </div>
+
+  <footer class="mt-10">
+    <p class="text-gray-600">Powered by PHP and MySQL</p>
+  </footer>
+</body>
+</html>

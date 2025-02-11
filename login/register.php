@@ -1,43 +1,50 @@
-<?php 
-$conn=require_once("config.php");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>註冊</title>
+</head>
+<body>
+<h2>註冊頁面</h2>
+<form action="" method="POST">
+    <label for="username">帳號:</label>
+    <input type="text" name="username" id="username" required><br>
+    <label for="password">密碼:</label>
+    <input type="password" name="password" id="password" required><br>
+    <button type="submit">註冊</button>
+</form>
+<a href="index.php">返回登入頁面</a>
 
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-    $username=$_POST["username"];
-    $password=$_POST["password"];
-    //檢查帳號是否重複
-    $check="SELECT * FROM user WHERE username='".$username."'";
-    if(mysqli_num_rows(mysqli_query($conn,$check))==0){
-        $sql="INSERT INTO user (id,username, password)
-            VALUES(NULL,'".$username."','".$password."')";
-        
-        if(mysqli_query($conn, $sql)){
-            echo "註冊成功!3秒後將自動跳轉頁面<br>";
-            echo "<a href='index.php'>未成功跳轉頁面請點擊此</a>";
-            header("refresh:32;url=index.php");
-            exit;
-        }else{
-            echo "Error creating table: " . mysqli_error($conn);
+<?php
+$conn = require_once("config.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    
+    $check = "SELECT * FROM user WHERE username = ?";
+    $stmt = $conn->prepare($check);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows == 0) {
+        $sql = "INSERT INTO user (username, password) VALUES (?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $username, $password);
+
+        if ($stmt->execute()) {
+            echo "<p style='color: green;'>註冊成功!</p>";
+            header("refresh:3;url=index.php");
+        } else {
+            echo "<p style='color: red;'>註冊失敗: " . $conn->error . "</p>";
         }
-    }
-    else{
-        echo "該帳號已有人使用!<br>3秒後將自動跳轉頁面<br>";
-        echo "<a href='register.html'>未成功跳轉頁面請點擊此</a>";
-        header('HTTP/1.0 302 Found');
-        //header("refresh:3;url=register.html",true);
-        exit;
+    } else {
+        echo "<p style='color: red;'>該帳號已有人使用!</p>";
     }
 }
 
-
-mysqli_close($conn);
-
-function function_alert($message) { 
-      
-    // Display the alert box  
-    echo "<script>alert('$message');
-     window.location.href='index.php';
-    </script>"; 
-    
-    return false;
-} 
+$conn->close();
 ?>
+</body>
+</html>

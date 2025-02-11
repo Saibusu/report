@@ -1,7 +1,18 @@
 <?php
-session_start();  //很重要，可以用的變數存在session裡
-$username=$_SESSION["username"];
-echo "<h1>你好 ".$username."</h1>";
-echo "<a href='logout.php'>登出</a>";
-    
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: index.php");
+    exit;
+}
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歡迎頁面</title>
+</head>
+<body>
+<h2>歡迎, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
+<a href="logout.php">登出</a>
+</body>
+</html>

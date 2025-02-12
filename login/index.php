@@ -1,8 +1,15 @@
 <?php
 session_start();
-if (isset($_SESSION['student_id'])) {  // 修改 session key 為 student_id
+if (isset($_SESSION['student_id'])) {  
     header("Location: welcome.php");
     exit;
+}
+
+// 取得錯誤訊息，顯示後刪除
+$error = "";
+if (isset($_SESSION["error"])) {
+    $error = $_SESSION["error"];
+    unset($_SESSION["error"]);  // 顯示後刪除 session
 }
 ?>
 <!DOCTYPE html>
@@ -29,10 +36,13 @@ if (isset($_SESSION['student_id'])) {  // 修改 session key 為 student_id
 <div class="container">
     <div class="login-container">
         <h2 class="text-center">登入頁面</h2>
+        <?php if (!empty($error)) { ?>
+            <p class="text-danger text-center"><?php echo $error; ?></p>
+        <?php } ?>
         <form action="login.php" method="post">
             <div class="mb-3">
-                <label for="student_id" class="form-label">學號:</label> <!-- 修改欄位名稱 -->
-                <input type="text" class="form-control" name="student_id" id="student_id" required> <!-- 修改欄位名稱 -->
+                <label for="student_id" class="form-label">學號:</label>
+                <input type="text" class="form-control" name="student_id" id="student_id" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">密碼:</label>

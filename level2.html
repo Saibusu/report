@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>密碼學闖關遊戲</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Noto Sans TC", sans-serif;
+      }
+      code,
+      pre,
+      .font-mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+      #timer {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .scoreboard {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .challenge-card {
+        border-left: 4px solid #4f46e5;
+      }
+      pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+      .crypto-bg {
+        background-color: #f9fafb;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234F46E5' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+    </style>
+    <script>
+      let timerInterval;
+      let timerSeconds = 0;
+
+      function startTimer() {
+        timerInterval = setInterval(function () {
+          timerSeconds++;
+          const minutes = Math.floor(timerSeconds / 60);
+          const seconds = timerSeconds % 60;
+          document.getElementById("timer").textContent = `${minutes
+            .toString()
+            .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+        }, 1000);
+      }
+
+      function stopTimer() {
+        clearInterval(timerInterval);
+      }
+
+      function submitAnswer() {
+        stopTimer();
+        const userCode = document.getElementById("code").value;
+
+        // 在這裡處理表單提交，這只是前端示例
+        document.getElementById("user-code-display").textContent = userCode;
+
+        // 模擬輸出結果
+        const output = "4a6acd73f528662d13207cf429a42593";
+        document.getElementById("user-output").textContent = output;
+
+        // 模擬比對標準答案
+        const expectedOutput = "4a6acd73f528662d13207cf429a42593";
+        if (output === expectedOutput) {
+          document.getElementById("comparison-result").innerHTML = `
+          <div class='p-3 bg-green-50 rounded-md border border-green-200'>
+            <p class='flex items-center text-green-700'><svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5 mr-2' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg><strong>完全符合！</strong></p>
+            <p class='mt-2 text-green-600'>你的輸出與標準答案完全一致，獲得滿分！</p>
+          </div>
+        `;
+          document.getElementById("score-display").textContent = "100";
+          document.getElementById("score-display").className =
+            "text-3xl font-bold text-green-600";
+        } else {
+          document.getElementById("comparison-result").innerHTML = `
+          <div class='p-3 bg-red-50 rounded-md border border-red-200'>
+            <p class='flex items-center text-red-700'><svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5 mr-2' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg><strong>不符合！</strong></p>
+            <p class='mt-2 text-red-600'>你的輸出與標準答案不一致。請檢查你的解密方法或密鑰是否正確。</p>
+          </div>
+        `;
+          document.getElementById("score-display").textContent = "0";
+          document.getElementById("score-display").className =
+            "text-3xl font-bold text-red-500";
+        }
+
+        // 顯示比對結果區塊
+        document.getElementById("result-section").classList.remove("hidden");
+
+        return false; // 阻止表單實際提交
+      }
+    </script>
+  </head>
+  <body
+    onload="startTimer()"
+    class="bg-gray-50 text-gray-800 min-h-screen flex flex-col items-center py-6 crypto-bg"
+  >
+    <header class="w-full max-w-5xl flex flex-col items-center mb-6">
+      <h1 class="text-4xl font-bold text-indigo-700 mb-2">密碼學闖關遊戲</h1>
+    </header>
+
+    <!-- 題目區塊 -->
+    <div
+      class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
+    >
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-indigo-700">
+          關卡 #2：Monoalphabetic Ciphers
+        </h2>
+        <span
+          class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
+          >Easy</span
+        >
+      </div>
+      <div class="prose max-w-none">
+        <p class="text-lg mb-4">
+          Use the additive cipher with key = 15 to encrypt the message “hello”
+        </p>
+
+        <div class="bg-gray-50 p-4 rounded-md mb-4">
+          <h3 class="text-md font-semibold mb-2">提示：</h3>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>
+              apply the encryption algorithm to the plaintext, character by
+              character
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6">
+      <div class="scoreboard mb-5 p-3 bg-gray-50 rounded-lg">
+        <div class="flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-red-500 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <div id="timer" class="text-red-600">00:00</div>
+        </div>
+        <div id="score" class="flex items-center text-green-600 font-bold">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-green-500 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          分數: <span class="ml-1">0</span>
+        </div>
+      </div>
+
+      <form onsubmit="return submitAnswer();" class="w-full">
+        <label for="code" class="block text-gray-700 text-lg font-bold mb-2"
+          >作答區</label
+        >
+        <textarea
+          id="code"
+          name="code"
+          rows="10"
+          class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4 font-mono"
+          placeholder="在這裡輸入你的答案..."
+        ></textarea>
+        <button
+          type="submit"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200 flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
+          提交並驗證
+        </button>
+      </form>
+    </div>
+
+    <!-- 比對結果區塊 (初始隱藏) -->
+    <!-- <div
+      id="result-section"
+      class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 hidden"
+    >
+      <h2 class="text-xl font-bold mb-4 flex items-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-indigo-500 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        驗證結果:
+      </h2>
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <div class="mb-4">
+          <h3 class="text-lg font-semibold mb-2">你的程式碼:</h3>
+          <pre
+            id="user-code-display"
+            class="bg-gray-100 p-3 rounded-lg font-mono border border-gray-200 text-sm overflow-x-auto"
+          >
+// 等待提交...</pre
+          >
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div class="p-4 bg-white rounded-md border border-gray-200">
+            <p class="font-medium mb-2 text-indigo-700">標準答案 (MD5):</p>
+            <pre
+              class="bg-indigo-50 p-3 rounded text-indigo-700 block font-mono border border-indigo-100"
+            >
+4a6acd73f528662d13207cf429a42593</pre
+            >
+          </div>
+          <div class="p-4 bg-white rounded-md border border-gray-200">
+            <p class="font-medium mb-2 text-blue-700">你的輸出:</p>
+            <pre
+              id="user-output"
+              class="bg-blue-50 p-3 rounded block font-mono border border-blue-100"
+            >
+尚未提交</pre
+            >
+          </div>
+        </div>
+
+        結果評估 
+        <div
+          id="comparison-result"
+          class="p-4 bg-white rounded-md border border-gray-200 mb-4"
+        >
+          <p class="italic text-gray-500">尚未提交答案，請先提交程式碼</p>
+        </div>
+
+        最終得分
+        <div class="mt-4 p-4 bg-white rounded-md border border-gray-200">
+          <p class="font-medium mb-2">最終得分:</p>
+          <div class="flex items-center">
+            <p id="score-display" class="text-3xl font-bold text-gray-400">0</p>
+            <p class="ml-2 text-lg">/100</p>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- <footer class="text-center text-gray-500 mt-8">
+      <p>© 2023 密碼學闖關遊戲. All rights reserved.</p>
+    </footer> -->
+  </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>關卡選擇</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        /* 漸層背景 - 你可以調整顏色 */
+        background: linear-gradient(135deg, #a8edea 0%, #05568b 100%);
+
+        /* 或者使用背景圖片 (取消漸層背景並啟用下方程式碼) */
+        /* background-image: url('你的背景圖片網址.jpg'); */
+        /* background-size: cover; /* 圖片填滿背景 */
+        /* background-repeat: no-repeat; /* 不重複圖片 */
+        /* background-attachment: fixed; /* 固定背景圖片 */
+      }
+
+      .container {
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.9); /* 白色容器背景，略微透明 */
+        padding: 50px; /* 增加內距 */
+        border-radius: 15px; /* 更圓潤的邊角 */
+        /* 更柔和的陰影 */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(0, 0, 0, 0.1); /* 輕微邊框 */
+      }
+
+      h1 {
+        margin-bottom: 40px; /* 增加標題下間距 */
+        color: #333;
+        font-size: 2.5em; /* 標題字體稍微放大 */
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1); /* 標題文字陰影 */
+      }
+
+      .level-grid {
+        display: grid;
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(150px, 1fr)
+        ); /* 按鈕最小寬度稍微增加 */
+        gap: 30px; /* 關卡按鈕間距增加 */
+        max-width: 700px; /* 關卡列表最大寬度稍微增加 */
+        margin: 0 auto;
+      }
+
+      .level-button {
+        padding: 20px 25px; /* 按鈕內距增加 */
+        border: none;
+        border-radius: 10px; /* 按鈕邊角更圓潤 */
+        /* 按鈕漸層背景 - 你可以調整顏色 */
+        background: linear-gradient(
+          to bottom right,
+          #6a82fb,
+          #4b13cf
+        ); /* 鮮豔的藍紫色到粉紅色漸層 */
+        color: white;
+        font-size: 18px; /* 按鈕字體稍微放大 */
+        font-weight: bold; /* 按鈕文字加粗 */
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease; /* 加入變形和陰影過渡效果 */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* 按鈕陰影 */
+      }
+
+      .level-button:hover {
+        /* 懸停時稍微放大和提升 */
+        transform: scale(1.05);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.25); /* 更明顯的懸停陰影 */
+        background: linear-gradient(
+          to bottom right,
+          #5a72eb,
+          #4b13cf
+        ); /* 懸停時漸層稍微調整 */
+      }
+
+      .level-button:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(106, 130, 251, 0.7); /* focus 時的光暈效果 */
+        transform: scale(1.02); /* focus 時稍微放大 */
+      }
+      /* CSS 樣式結束 */
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>選擇你的關卡</h1>
+      <div class="level-grid">
+        <button class="level-button" data-level="1">第一關</button>
+        <button class="level-button" data-level="2">第二關</button>
+      </div>
+    </div>
+
+    <script>
+      // JavaScript 程式碼開始
+      document.addEventListener("DOMContentLoaded", function () {
+        const levelButtons = document.querySelectorAll(".level-button");
+
+        levelButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const levelNumber = this.getAttribute("data-level");
+            // 根據關卡編號導向不同的 HTML 檔案
+            if (levelNumber === "1") {
+              window.location.href = "level1.html";
+            } else if (levelNumber === "2") {
+              window.location.href = "level2.html"; // 導向到 level2.html
+            } else {
+              alert("未知的關卡！"); // 可選：處理未知關卡的情況
+            }
+          });
+        });
+      });
+      // JavaScript 程式碼結束
+    </script>
+  </body>
+</html>

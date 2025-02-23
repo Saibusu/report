@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Judge - 登入 / 註冊</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; }
+        .container { width: 400px; background: white; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 10px; }
+        h2 { text-align: center; margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: bold; margin-bottom: 5px; }
+        .input-group input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
+        .btn { width: 100%; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        .btn:hover { background: #0056b3; }
+        .switch { text-align: center; margin-top: 10px; }
+        .switch a { color: #007bff; text-decoration: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 id="formTitle">登入</h2>
+    <form id="loginForm">
+        <div class="input-group">
+            <label for="school_num">學號</label>
+            <input type="text" id="school_num" required>
+        </div>
+        <div class="input-group">
+            <label for="password">密碼</label>
+            <input type="password" id="password" required>
+        </div>
+        <button type="submit" class="btn">登入</button>
+        <div class="switch">
+            沒有帳號？<a onclick="toggleForm()">註冊</a>
+        </div>
+    </form>
+
+    <form id="registerForm" style="display: none;">
+        <div class="input-group">
+            <label for="name">姓名</label>
+            <input type="text" id="name" required>
+        </div>
+        <div class="input-group">
+            <label for="school_num_reg">學號</label>
+            <input type="text" id="school_num_reg" required>
+        </div>
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+        </div>
+        <div class="input-group">
+            <label for="password_reg">密碼</label>
+            <input type="password" id="password_reg" required>
+        </div>
+        <button type="submit" class="btn">註冊</button>
+        <div class="switch">
+            已有帳號？<a onclick="toggleForm()">登入</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function toggleForm() {
+        const loginForm = document.getElementById("loginForm");
+        const registerForm = document.getElementById("registerForm");
+        const formTitle = document.getElementById("formTitle");
+
+        if (loginForm.style.display === "none") {
+            loginForm.style.display = "block";
+            registerForm.style.display = "none";
+            formTitle.innerText = "登入";
+        } else {
+            loginForm.style.display = "none";
+            registerForm.style.display = "block";
+            formTitle.innerText = "註冊";
+        }
+    }
+</script>
+
+</body>
+</html>

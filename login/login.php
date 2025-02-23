@@ -1,38 +1,52 @@
 <?php
 session_start();
-require_once("config.php");  // 確保資料庫連線
+header("Content-Type: application/json"); // 設定回應類型為 JSON
+require "db_connect.php"; // 連接資料庫
+
+$response = ["status" => "error", "message" => "請求失敗"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $student_id = trim($_POST["student_id"]);
-    $password = trim($_POST["password"]);
+    // 取得前端傳來的資料
+    $email = trim($_POST["email"]);
+    $password = $_POST["password"];
 
-    // 查詢學號對應的名稱與密碼
-    $sql = "SELECT student_id, name, password FROM users WHERE student_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $student_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-
-        // ⚠️ 使用 password_verify() 來比對加密密碼（如果密碼有加密）
-        if ($password === $row["password"]) {  
-            $_SESSION["student_id"] = $row["student_id"];
-            $_SESSION["username"] = $row["name"];  // ✅ 使用 name 存入 session
-
-            header("Location: welcome.php");
-            exit;
-        } else {
-            $_SESSION["error"] = "學號或密碼錯誤！";
-        }
-    } else {
-        $_SESSION["error"] = "學號或密碼錯誤！";
+    // 檢查是否有空值
+    if (empty($email) || empty($password)) {
+        $response["message"] = "請填寫 Email 和密碼";
+        echo json_encode($response);
+        exit;
     }
 
-    // 重新導向回登入頁面，讓錯誤訊息顯示
-    header("Location: index.php");
-    exit;
+    // 從資料庫查詢該 Email
+    $stmt = $conn->prepare("SELECT id, name, password FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+    
+    // 如果找到該 Email
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($user_id, $name, $hashed_password);
+        $stmt->fetch();
+
+        // 驗證密碼
+        if (password_verify($password, $hashed_password)) {
+            // 設定 Session
+            $_SESSION["user_id"] = $user_id;
+            $_SESSION["name"] = $name;
+            $_SESSION["email"] = $email;
+
+            $response["status"] = "success";
+            $response["message"] = "登入成功";
+            $response["user"] = ["id" => $user_id, "name" => $name, "email" => $email];
+        } else {
+            $response["message"] = "密碼錯誤";
+        }
+    } else {
+        $response["message"] = "此 Email 未註冊";
+    }
+    
+    $stmt->close();
 }
-$conn->close();
+
+echo json_encode($response);
 ?>

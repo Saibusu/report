@@ -20,25 +20,18 @@
   >
     <!-- 導覽列開始 -->
     <nav class="navbar">
-      <!-- 導覽列容器開始 -->
       <div class="nav-container">
-        <!-- Logo 開始 -->
         <a href="index.html" class="logo">密碼學闖關遊戲</a>
-        <!-- Logo 結束 -->
-        <!-- 導覽連結開始 -->
         <div class="nav-links">
           <a href="/report/home/home.html">首頁</a>
           <a href="user.html">用戶</a>
           <a href="/report/levels/levels.html">關卡</a>
           <a href="/report/leaderboard/leaderboard.html">排行榜</a>
         </div>
-        <!-- 導覽連結結束 -->
       </div>
-      <!-- 導覽列容器結束 -->
     </nav>
-    <!-- 導覽列結束 -->
+
     <header class="w-full max-w-5xl flex flex-col items-center mb-6 mt-20">
-      <!-- 調整 mt-20 讓 header 下移 -->
       <h1 class="text-4xl font-bold text-indigo-700 mb-2">密碼學闖關遊戲</h1>
     </header>
 
@@ -139,15 +132,15 @@
       </form>
     </div>
 
-    <!-- 比對結果區塊 (初始隱藏) -->
-    <!-- <div
-      id="result-section"
-      class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 hidden"
-    >
-      <h2 class="text-xl font-bold mb-4 flex items-center">
+    <!-- 新增關卡導航按鈕 -->
+    <div class="w-full max-w-5xl flex justify-between items-center mb-8">
+      <a
+        href="levels.html"
+        class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 text-indigo-500 mr-2"
+          class="h-5 w-5 mr-2"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -156,65 +149,33 @@
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            d="M15 19l-7-7 7-7"
           />
         </svg>
-        驗證結果:
-      </h2>
-
-      <div class="bg-gray-50 p-4 rounded-lg">
-        <div class="mb-4">
-          <h3 class="text-lg font-semibold mb-2">你的程式碼:</h3>
-          <pre
-            id="user-code-display"
-            class="bg-gray-100 p-3 rounded-lg font-mono border border-gray-200 text-sm overflow-x-auto"
-          >
-// 等待提交...</pre
-          >
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div class="p-4 bg-white rounded-md border border-gray-200">
-            <p class="font-medium mb-2 text-indigo-700">標準答案 (MD5):</p>
-            <pre
-              class="bg-indigo-50 p-3 rounded text-indigo-700 block font-mono border border-indigo-100"
-            >
-4a6acd73f528662d13207cf429a42593</pre
-            >
-          </div>
-          <div class="p-4 bg-white rounded-md border border-gray-200">
-            <p class="font-medium mb-2 text-blue-700">你的輸出:</p>
-            <pre
-              id="user-output"
-              class="bg-blue-50 p-3 rounded block font-mono border border-blue-100"
-            >
-尚未提交</pre
-            >
-          </div>
-        </div>
-
-        結果評估
-        <div
-          id="comparison-result"
-          class="p-4 bg-white rounded-md border border-gray-200 mb-4"
+        返回選關
+      </a>
+      <a
+        href="level2.html"
+        class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
+      >
+        下一關
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 ml-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          <p class="italic text-gray-500">尚未提交答案，請先提交程式碼</p>
-        </div>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </a>
+    </div>
 
-        最終得分
-        <div class="mt-4 p-4 bg-white rounded-md border border-gray-200">
-          <p class="font-medium mb-2">最終得分:</p>
-          <div class="flex items-center">
-            <p id="score-display" class="text-3xl font-bold text-gray-400">0</p>
-            <p class="ml-2 text-lg">/100</p>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- <footer class="text-center text-gray-500 mt-8">
-      <p>© 2023 密碼學闖關遊戲. All rights reserved.</p>
-    </footer> -->
     <script src="level.js"></script>
   </body>
 </html>

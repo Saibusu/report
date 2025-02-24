@@ -17,7 +17,7 @@
             e.preventDefault();
             const formData = new FormData(this);
 
-            fetch("/report/login®ister/register.php", {
+            fetch("/report/login&register/register.php", {
               method: "POST",
               body: formData,
             })
@@ -30,7 +30,7 @@
               .then((data) => {
                 alert(data.message);
                 if (data.status === "success") {
-                  window.location.href = "/report/login®ister/login.html";
+                  window.location.href = "/report/login&reister/login.html";
                 }
               })
               .catch((error) => {

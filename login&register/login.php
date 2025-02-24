@@ -1,63 +1,46 @@
 <?php
-header('Content-Type: application/json'); // 設定回應為 JSON 格式
-
-// 包含資料庫連線檔案
 require_once 'db_connect.php';
 
-try {
-    // 假設 db_connect.php 返回 $conn 物件
-    if (!$conn) {
-        throw new Exception("資料庫連線失敗");
-    }
+header('Content-Type: application/json; charset=UTF-8');
 
-    // 獲取表單數據
-    $school_num = $_POST['school_num'] ?? '';
-    $password = $_POST['password'] ?? '';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $school_num = $_POST['school_num'];
+    $password = $_POST['password'];
 
-    // 驗證輸入是否為空
     if (empty($school_num) || empty($password)) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "學號和密碼不能為空"
-        ]);
+        echo json_encode(["status" => "error", "message" => "學號和密碼不得為空"]);
         exit;
     }
 
-    // 查詢資料庫，驗證學號和密碼，使用正確的大寫欄位名稱 SCHOOL_ID
-    $stmt = $conn->prepare("SELECT PASSWORD FROM users WHERE SCHOOL_ID = ?");
-    $stmt->bind_param("s", $school_num);
+    $conn = connectDB();
+    if (!$conn) {
+        exit; // connectDB() already handles error response
+    }
+
+    $stmt = $conn->prepare("SELECT * FROM users WHERE school_id = ?");
+    // 將 "s" 改為 "i"，因為 school_id 在資料庫中是 INT
+    $stmt->bind_param("i", $school_num);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result->num_rows === 1) {
-        $row = $result->fetch_assoc();
-        $stored_password = $row['PASSWORD'];
-
-        // 這裡簡單比較密碼（建議在實際應用中使用密碼雜湊，如 password_verify()）
-        if ($password === $stored_password) {
-            echo json_encode([
-                "status" => "success",
-                "message" => "登入成功"
-            ]);
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        // **Important Security Note:**
+        // In a real application, you should NEVER store plain text passwords.
+        // Use password_hash() when registering and password_verify() here.
+        if ($password === $user['password']) { // WARNING: Plain text password comparison!
+            echo json_encode(["status" => "success", "message" => "登入成功"]);
         } else {
-            echo json_encode([
-                "status" => "error",
-                "message" => "密碼錯誤"
-            ]);
+            echo json_encode(["status" => "error", "message" => "密碼錯誤"]);
         }
     } else {
-        echo json_encode([
-            "status" => "error",
-            "message" => "學號不存在"
-        ]);
+        echo json_encode(["status" => "error", "message" => "學號不存在"]);
     }
 
     $stmt->close();
     $conn->close();
-} catch (Exception $e) {
-    echo json_encode([
-        "status" => "error",
-        "message" => $e->getMessage()
-    ]);
+
+} else {
+    echo json_encode(["status" => "error", "message" => "請求方式錯誤"]);
 }
 ?>

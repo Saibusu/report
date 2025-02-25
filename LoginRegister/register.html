@@ -37,7 +37,7 @@
             }
 
             try {
-              const response = await fetch("/report/LoginRegister/register.php", {
+              const response = await fetch("/LoginRegister/register.php", {
                 method: "POST",
                 body: formData,
               });
@@ -51,7 +51,7 @@
               // 處理後端回應
               alert(data.message);
               if (data.status === "success") {
-                window.location.href = "/report/LoginRegister/login.html";
+                window.location.href = "/LoginRegister/login.html";
               }
             } catch (error) {
               alert("發生錯誤: " + error.message);
@@ -65,7 +65,7 @@
       <h2>註冊新帳號</h2>
       <form
         id="registerForm"
-        action="/report/LoginRegister/register.php"
+        action="/LoginRegister/register.php"
         method="POST"
       >
         <div class="input-group">
@@ -86,10 +86,10 @@
         </div>
         <button type="submit" class="btn">註冊</button>
         <div class="switch">
-          已有帳號？<a href="/report/LoginRegister/login.html">登入</a>
+          已有帳號？<a href="/LoginRegister/login.html">登入</a>
         </div>
         <div class="switch" style="margin-top: 10px">
-          <a href="/report/LoginRegister/index.html">返回選擇</a>
+          <a href="/LoginRegister/index.html">返回選擇</a>
         </div>
       </form>
     </div>

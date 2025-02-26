@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Judge - 登入/註冊</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Noto Sans TC", Arial, sans-serif;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #a8edea 0%, #05568b 100%);
+        padding: 20px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 450px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 2.5rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        border-radius: 15px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      h1 {
+        margin-bottom: 2rem;
+        color: #333;
+        font-size: 2.5em;
+        font-weight: bold;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .auth-button {
+        padding: 1rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .login-btn {
+        background: linear-gradient(to bottom right, #6a82fb, #4b13cf);
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .register-btn {
+        background: white;
+        color: #4b13cf;
+        border: 2px solid #4b13cf;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .auth-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .auth-button:active {
+        transform: translateY(0);
+      }
+
+      .welcome-text {
+        color: #4a5568;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>歡迎使用</h1>
+      <p class="welcome-text">
+        加入我們的密碼學闖關遊戲，開始你的學習旅程！<br />
+        請選擇登入或註冊以繼續。
+      </p>
+      <div class="button-group">
+        <a
+          href="/LoginRegister/login.html"
+          class="auth-button login-btn"
+          >登入帳號</a
+        >
+        <a
+          href="/LoginRegister/register.html"
+          class="auth-button register-btn"
+          >註冊新帳號</a
+        >
+      </div>
+    </div>
+  </body>
+</html>

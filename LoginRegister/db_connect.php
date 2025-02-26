@@ -1,13 +1,17 @@
 <?php
-$db_host = 'localhost'; // 資料庫主機 (通常是 localhost 或 127.0.0.1)
-$db_user = 'root'; // 你的 MySQL 使用者名稱
-$db_pass = 'abc369';     // 你的 MySQL 密碼
-$db_name = 'test'; // 你建立的資料庫名稱
+$db_host = 'localhost';
+$db_user = 'root';
+$db_pass = 'abc369';
+$db_name = 'test';
 
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
 if ($conn->connect_error) {
-    die("資料庫連線失敗: " . $conn->connect_error);
+    header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode(["status" => "error", "message" => "資料庫連線失敗: " . $conn->connect_error]);
+    exit;
 }
-echo "測試成功";
+
+// 設置 UTF-8 字符集
+$conn->set_charset("utf8mb4");
 ?>

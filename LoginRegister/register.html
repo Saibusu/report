@@ -43,10 +43,22 @@
               });
 
               if (!response.ok) {
-                throw new Error(`HTTP 錯誤！狀態: ${response.status}`);
+                // 嘗試獲取回應文本以顯示更詳細的錯誤
+                const errorText = await response.text();
+                throw new Error(`HTTP 錯誤！狀態: ${response.status} - ${errorText}`);
+              }
+
+              const contentType = response.headers.get("content-type");
+              if (!contentType || !contentType.includes("application/json")) {
+                throw new Error("後端返回的不是 JSON 格式: " + await response.text());
               }
 
               const data = await response.json();
+
+              // 確保 data 存在並有 message 屬性
+              if (!data || typeof data.message !== "string") {
+                throw new Error("後端回應格式錯誤: " + JSON.stringify(data));
+              }
 
               // 處理後端回應
               alert(data.message);

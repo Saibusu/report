@@ -1,5 +1,5 @@
 <?php
-require 'db_connect.php';
+require_once 'db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'] ?? '';
@@ -17,11 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    $conn = connectDB();
-    if (!$conn) {
-        header("Location: /LoginRegister/register.html?error=" . urlencode("資料庫連線失敗"));
-        exit;
-    }
+    $conn = connectDB(); // 這裡調用統一的 connectDB()
 
     $stmt = $conn->prepare("SELECT school_num, email FROM users WHERE school_num = ? OR email = ?");
     $stmt->bind_param("is", $school_num, $email);

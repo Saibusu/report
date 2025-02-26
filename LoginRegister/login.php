@@ -10,12 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    $conn = connectDB();
-    if (!$conn) {
-        header("Location: /LoginRegister/login.html?error=" . urlencode("資料庫連線失敗"));
-        exit;
-    }
-
+    $conn = connectDB(); // 這裡調用統一的 connectDB()
+    
+    // 如果 connectDB() 失敗，會直接 die()，所以這裡不需要額外檢查
     $stmt = $conn->prepare("SELECT * FROM users WHERE school_num = ?");
     $stmt->bind_param("i", $school_num);
     $stmt->execute();
@@ -26,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $user['password'])) {
             session_start();
             $_SESSION['user_id'] = $user['school_num'];
-            header("Location: /LoginRegister/dashboard.php"); // 假設有一個儀表板頁面
+            header("Location: /LoginRegister/dashboard.php");
         } else {
             header("Location: /LoginRegister/login.html?error=" . urlencode("密碼錯誤"));
         }

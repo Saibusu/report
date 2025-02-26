@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $user['password'])) {
             session_start();
             $_SESSION['user_id'] = $user['school_num'];
-            header("Location: /LoginRegister/dashboard.php");
+            header("Location: /home/home.html");
         } else {
             header("Location: /LoginRegister/login.html?error=" . urlencode("密碼錯誤"));
         }

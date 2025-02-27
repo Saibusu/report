@@ -153,7 +153,7 @@
         <a href="index.html" class="logo">密碼學闖關遊戲</a>
         <div class="nav-links">
           <a href="/home/home.html">首頁</a>
-          <a href="/user/dashboard.html">用戶</a>
+          <a href="/user/dashboard.php">用戶</a>
           <a href="/levels/levels.html">關卡</a>
           <a href="/leaderboard/leaderboard.html">排行榜</a>
         </div>
@@ -161,33 +161,5 @@
     </nav>
 
     <!-- 主要內容區域 -->
-    <div class="main-content">
-      <div class="container">
-        <h1>選擇你的關卡</h1>
-        <div class="level-grid">
-          <button class="level-button" data-level="1">第一關</button>
-          <button class="level-button" data-level="2">第二關</button>
-        </div>
-      </div>
-    </div>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const levelButtons = document.querySelectorAll(".level-button");
-
-        levelButtons.forEach((button) => {
-          button.addEventListener("click", function () {
-            const levelNumber = this.getAttribute("data-level");
-            if (levelNumber === "1") {
-              window.location.href = "/levels/level1.html";
-            } else if (levelNumber === "2") {
-              window.location.href = "/levels/level2.html";
-            } else {
-              alert("未知的關卡！");
-            }
-          });
-        });
-      });
-    </script>
   </body>
 </html>

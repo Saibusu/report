@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        if (password_verify($password, $user['password'])) {
+        if ($password === $user['password']) { // 改為明文比較
             session_start();
             $_SESSION['user_id'] = $user['school_num'];
             header("Location: /home/home.html");

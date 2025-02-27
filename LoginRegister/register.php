@@ -37,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // 移除 password_hash，直接使用明文密碼
     $stmt = $conn->prepare("INSERT INTO users (name, school_num, email, password, reg_time) VALUES (?, ?, ?, ?, NOW())");
     $stmt->bind_param("siss", $name, $school_num, $email, $password);
 

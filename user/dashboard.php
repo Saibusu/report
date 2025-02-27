@@ -1,6 +1,14 @@
 <?php
 session_start();
-require "db_connect.php"; // 連接資料庫
+
+// 確保 db_connect.php 包含資料庫連線函數，並呼叫它來建立連線
+require "D:\user\Desktop\上課\專題製作\LoginRegister\db_connect.php"; 
+$conn = connectDB(); // 呼叫 connectDB() 函數並將結果賦值給 $conn
+
+// 如果連線失敗，檢查並處理錯誤
+if ($conn === false || $conn->connect_error) {
+    die("資料庫連線失敗: " . ($conn->connect_error ?? "未知錯誤"));
+}
 
 // 如果未登入，跳轉回 login.php
 if (!isset($_SESSION["user_id"])) {

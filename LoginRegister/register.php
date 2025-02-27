@@ -37,9 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $stmt = $conn->prepare("INSERT INTO users (name, school_num, email, password, reg_time) VALUES (?, ?, ?, ?, NOW())");
-    $stmt->bind_param("siss", $name, $school_num, $email, $hashed_password);
+    $stmt->bind_param("siss", $name, $school_num, $email, $password);
 
     if ($stmt->execute()) {
         header("Location: /LoginRegister/login.html?success=" . urlencode("註冊成功，請登入"));

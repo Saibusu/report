@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Level choice3-2</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Microsoft JhengHei", Arial, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #a8edea 0%, #05568b 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 90%;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 2em;
+      }
+
+      .question {
+        margin-bottom: 20px;
+        font-size: 1.2em;
+        color: #333;
+      }
+
+      .options {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        margin-bottom: 20px;
+      }
+
+      .option {
+        margin: 10px 0;
+        font-size: 1.1em;
+      }
+
+      .option input {
+        margin-right: 10px;
+      }
+
+      .submit-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(to bottom right, #6a82fb, #4b13cf);
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        transform: scale(1.05);
+        background: linear-gradient(to bottom right, #5a72eb, #4b13cf);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Level choice3-2</h1>
+      <div class="question">2. 以下哪種是對等勾密機制？ (多選)</div>
+      <form>
+        <div class="options">
+          <label class="option">
+            <input type="checkbox" name="answer" value="A" /> (A) AES
+          </label>
+          <label class="option">
+            <input type="checkbox" name="answer" value="B" /> (B) RSA
+          </label>
+          <label class="option">
+            <input type="checkbox" name="answer" value="C" /> (C) DES
+          </label>
+          <label class="option">
+            <input type="checkbox" name="answer" value="D" /> (D) 3DES
+          </label>
+        </div>
+        <button type="submit" class="submit-btn">提交</button>
+      </form>
+    </div>
+  </body>
+</html>

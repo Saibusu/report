@@ -1,0 +1,129 @@
+/* 全局樣式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* 容器 */
+.container {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 排行榜樣式 */
+.leaderboard {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.body {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* 單行數據 */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  transition: background 0.3s ease;
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* 前三名特殊樣式 */
+.row:nth-child(1) {
+  color: #ffd700;
+} /* 金色 */
+.row:nth-child(2) {
+  color: #c0c0c0;
+} /* 銀色 */
+.row:nth-child(3) {
+  color: #cd7f32;
+} /* 銅色 */
+
+/* 載入動畫 */
+.loading .row {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+/* 響應式設計 */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .header,
+  .row {
+    grid-template-columns: 1fr 2fr 1fr; /* 隱藏通關數 */
+    font-size: 0.9rem;
+  }
+
+  .header span:nth-child(4),
+  .row span:nth-child(4) {
+    display: none; /* 在小螢幕上隱藏通關數 */
+  }
+
+  .container {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .header,
+  .row {
+    grid-template-columns: 1fr 1fr; /* 只顯示排名和名稱 */
+  }
+
+  .header span:nth-child(3),
+  .row span:nth-child(3) {
+    display: none; /* 隱藏分數 */
+  }
+}

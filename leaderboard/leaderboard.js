@@ -10,7 +10,12 @@ function fetchLeaderboard() {
     '<div class="row"><span>載入中...</span><span></span><span></span><span></span></div>';
 
   fetch("leaderboard.php?limit=10")
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("網絡請求失敗");
+      }
+      return response.json();
+    })
     .then((data) => {
       tbody.classList.remove("loading");
       tbody.innerHTML = ""; // 清空

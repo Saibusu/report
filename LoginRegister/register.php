@@ -4,10 +4,11 @@ require_once 'db_connect.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'] ?? '';
     $school_num = $_POST['school_num'] ?? '';
+    $team = $_POST['team'] ?? ''; // 新增小組名稱
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    if (empty($name) || empty($school_num) || empty($email) || empty($password)) {
+    if (empty($name) || empty($school_num) || empty($team) || empty($email) || empty($password)) { // 包含 team 檢查
         header("Location: /LoginRegister/register.html?error=" . urlencode("所有欄位都必須填寫"));
         exit;
     }
@@ -38,8 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 移除 password_hash，直接使用明文密碼
-    $stmt = $conn->prepare("INSERT INTO users (name, school_num, email, password, reg_time) VALUES (?, ?, ?, ?, NOW())");
-    $stmt->bind_param("siss", $name, $school_num, $email, $password);
+    $stmt = $conn->prepare("INSERT INTO users (name, school_num, team, email, password, reg_time) VALUES (?, ?, ?, ?, ?, NOW())"); // 增加 team 欄位
+    $stmt->bind_param("sisss", $name, $school_num, $team, $email, $password); // 調整參數類型和順序
 
     if ($stmt->execute()) {
         header("Location: /LoginRegister/login.html?success=" . urlencode("註冊成功，請登入"));

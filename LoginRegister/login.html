@@ -10,10 +10,14 @@
     <div class="container">
       <h2>登入帳號</h2>
       <?php if (isset($_GET['error'])): ?>
-        <div style="color: red; margin-bottom: 1rem;"><?php echo htmlspecialchars($_GET['error']); ?></div>
+      <div style="color: red; margin-bottom: 1rem">
+        <?php echo htmlspecialchars($_GET['error']); ?>
+      </div>
       <?php endif; ?>
       <?php if (isset($_GET['success'])): ?>
-        <div style="color: green; margin-bottom: 1rem;"><?php echo htmlspecialchars($_GET['success']); ?></div>
+      <div style="color: green; margin-bottom: 1rem">
+        <?php echo htmlspecialchars($_GET['success']); ?>
+      </div>
       <?php endif; ?>
       <form id="loginForm" action="/LoginRegister/login.php" method="POST">
         <div class="input-group">

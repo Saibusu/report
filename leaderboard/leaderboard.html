@@ -7,25 +7,38 @@
     <link rel="stylesheet" href="leaderboard.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>排行榜</h1>
-      <div class="leaderboard">
-        <div class="header">
-          <span>排名</span>
-          <span>玩家名稱</span>
-          <span>分數</span>
-          <span>通關數</span>
-        </div>
-        <div class="body" id="leaderboard-body">
-          <!-- 動態數據將插入這裡 -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo">密碼學闖關遊戲</a>
+        <div class="nav-links">
+          <a href="/user/dashboard.php">用戶</a>
+          <a href="/home/home.html">首頁</a>
+          <a href="/levels/levels.html">關卡</a>
+          <a href="/leaderboard/leaderboard.html">排行榜</a>
         </div>
       </div>
-      <!-- 添加返回按鈕 -->
-      <button class="back-button" onclick="goBack()">返回上一頁</button>
+    </nav>
+
+    <div class="main-content">
+      <div class="container">
+        <h1>排行榜</h1>
+        <div class="leaderboard">
+          <div class="header">
+            <span>排名</span>
+            <span>玩家名稱</span>
+            <span>分數</span>
+            <span>通關數</span>
+          </div>
+          <div class="body" id="leaderboard-body">
+            <!-- 動態數據將插入這裡 -->
+          </div>
+        </div>
+        <button class="back-button" onclick="goBack()">返回上一頁</button>
+      </div>
     </div>
+
     <script src="leaderboard.js"></script>
     <script>
-      // 返回 home.html 的函數
       function goBack() {
         window.location.href = "/home/home.html";
       }

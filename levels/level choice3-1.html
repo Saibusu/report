@@ -22,10 +22,10 @@
       <div class="nav-container">
         <a href="index.html" class="logo">密碼學闖關遊戲</a>
         <div class="nav-links">
-          <a href="/home/home.html">首頁</a>
-          <a href="user.html">用戶</a>
-          <a href="/levels/levels.html">關卡</a>
-          <a href="/leaderboard/leaderboard.html">排行榜</a>
+          <a href="/report/user/dashboard.php">用戶</a>
+          <a href="/report/home/home.html">首頁</a>
+          <a href="/report/levels/levels.html">關卡</a>
+          <a href="/report/leaderboard/leaderboard.html">排行榜</a>
         </div>
       </div>
     </nav>
@@ -34,10 +34,17 @@
       <h1 class="text-4xl font-bold text-indigo-700 mb-2">密碼學闖關遊戲</h1>
     </header>
 
-    <div class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card">
+    <div
+      class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
+    >
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-indigo-700">關卡 #3：對等密碼 (Symmetric Cipher)</h2>
-        <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">Easy</span>
+        <h2 class="text-2xl font-bold text-indigo-700">
+          關卡 #3：對等密碼 (Symmetric Cipher)
+        </h2>
+        <span
+          class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
+          >Easy</span
+        >
       </div>
       <div class="prose max-w-none">
         <p class="text-lg mb-4">對等密碼 (對稱密碼) 的特點是什麼？ (單選)</p>
@@ -46,7 +53,9 @@
 
     <div class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6">
       <form onsubmit="return submitAnswer();" class="w-full">
-        <label class="block text-gray-700 text-lg font-bold mb-2">選擇你的答案：</label>
+        <label class="block text-gray-700 text-lg font-bold mb-2"
+          >選擇你的答案：</label
+        >
         <div class="space-y-2">
           <label class="flex items-center">
             <input type="radio" name="answer" value="A" class="mr-2" />
@@ -68,7 +77,9 @@
         <button
           type="submit"
           class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200"
-        >提交並驗證</button>
+        >
+          提交並驗證
+        </button>
       </form>
     </div>
 
@@ -77,8 +88,19 @@
         href="level2.html"
         class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
         上一關
       </a>
@@ -87,8 +109,19 @@
         class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
       >
         下一關
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 ml-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       </a>
     </div>

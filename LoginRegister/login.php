@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'] ?? '';
 
     if (empty($school_num) || empty($password)) {
-        header("Location: /LoginRegister/login.html?error=" . urlencode("學號和密碼不得為空"));
+        header("Location: /report/LoginRegister/login.html?error=" . urlencode("學號和密碼不得為空"));
         exit;
     }
 
@@ -23,17 +23,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($password === $user['password']) { // 改為明文比較
             session_start();
             $_SESSION['user_id'] = $user['school_num'];
-            header("Location: /home/home.html");
+            header("Location: /report/home/home.html");
         } else {
-            header("Location: /LoginRegister/login.html?error=" . urlencode("密碼錯誤"));
+            header("Location: /report/LoginRegister/login.html?error=" . urlencode("密碼錯誤"));
         }
     } else {
-        header("Location: /LoginRegister/login.html?error=" . urlencode("學號不存在"));
+        header("Location: /report/LoginRegister/login.html?error=" . urlencode("學號不存在"));
     }
 
     $stmt->close();
     $conn->close();
 } else {
-    header("Location: /LoginRegister/login.html?error=" . urlencode("請求方式錯誤"));
+    header("Location: /report/LoginRegister/login.html?error=" . urlencode("請求方式錯誤"));
 }
 ?>

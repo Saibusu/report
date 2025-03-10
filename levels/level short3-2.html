@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>密碼學闖關遊戲 - 簡答題第二題</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="level.css" />
+  </head>
+  <body class="text-gray-800 min-h-screen flex flex-col items-center py-6">
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo">密碼學闖關遊戲</a>
+        <div class="nav-links">
+          <a href="/home/home.html">首頁</a>
+          <a href="user.html">用戶</a>
+          <a href="/levels/levels.html">關卡</a>
+          <a href="/leaderboard/leaderboard.html">排行榜</a>
+        </div>
+      </div>
+    </nav>
+
+    <header class="w-full max-w-5xl flex flex-col items-center mb-6 mt-20">
+      <h1 class="text-4xl font-bold text-indigo-700 mb-2">密碼學闖關遊戲</h1>
+    </header>
+
+    <div class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #2：XOR 加密</h2>
+        <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">Easy</span>
+      </div>
+      <div class="prose max-w-none">
+        <p class="text-lg mb-4">
+          XOR 加密的特性是：如果我們用相同的密鑰對密文再次進行 XOR 運算，則會還原回 _______ 。
+        </p>
+      </div>
+    </div>
+
+    <div class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6">
+      <form onsubmit="return submitAnswer();" class="w-full">
+        <label for="answer" class="block text-gray-700 text-lg font-bold mb-2">作答區</label>
+        <textarea
+          id="answer"
+          name="answer"
+          rows="5"
+          class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4 font-mono"
+          placeholder="在這裡輸入你的答案..."></textarea>
+        <button
+          type="submit"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200 flex items-center">
+          提交並驗證
+        </button>
+      </form>
+    </div>
+
+    <div class="w-full max-w-5xl flex justify-between items-center mb-8">
+      <a href="levels.html" class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200">
+        返回選關
+      </a>
+      <a href="level3.html" class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200">
+        下一關
+      </a>
+    </div>
+
+    <script src="level.js"></script>
+  </body>
+</html>

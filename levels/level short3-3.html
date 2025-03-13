@@ -33,15 +33,21 @@
 
     <div class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #3：對等加密密鑰</h2>
+        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #3：Diffie-Hellman 密鑰交換</h2>
         <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">Easy</span>
       </div>
       <div class="prose max-w-none">
         <p class="text-lg mb-4">
-          為什麼對等加密法需要共享相同的密鑰？
+          假設 Alice 和 Bob 使用 Diffie-Hellman 交換密鑰，
+          公共質數 <strong>p = 23</strong>，基數 <strong>g = 5</strong>。
         </p>
         <p class="text-lg mb-4">
-          
+          (1) 計算 Alice 的公開值 <strong>A = g^a mod p</strong> （Alice 的私鑰 <strong>a = 6</strong>）
+        </p>
+        <p class="text-lg mb-4">
+          (2) 計算 Bob 的公開值 <strong>B = g^b mod p</strong> （Bob 的私鑰 <strong>b = 15</strong>）
+        </p>
+          !!以一個區分空格一二小題並填入答案即可ex:(1 2)!!
         </p>
       </div>
     </div>

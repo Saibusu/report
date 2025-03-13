@@ -33,15 +33,21 @@
 
     <div class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #4：對等加密演算法</h2>
+        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #4：Diffie-Hellman 密鑰交換</h2>
         <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">Easy</span>
       </div>
       <div class="prose max-w-none">
         <p class="text-lg mb-4">
-          舉出兩種常見的對等加密演算法，並簡單描述其特點。
+          根據上一題計算出的公開值 A 和 B，請繼續計算共享密鑰。
         </p>
         <p class="text-lg mb-4">
-          
+          (3) Alice 使用 Bob 的公開值 B 計算共享密鑰 <strong>S = B^a mod p</strong>。
+        </p>
+        <p class="text-lg mb-4">
+              Bob 使用 Alice 的公開值 A 計算共享密鑰 <strong>S = A^b mod p</strong>。
+        </p>  
+        <p class="text-lg mb-4">
+          請計算出 Alice 和 Bob 最終獲得的共享密鑰。
         </p>
       </div>
     </div>

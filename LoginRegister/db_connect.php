@@ -1,7 +1,7 @@
 <?php
-$db_host = 'localhost';
-$db_user = 'root';
-$db_pass = 'abc369';
+$db_host = '140.129.25.130';
+$db_user = 'Jay';
+$db_pass = 'jay0804';
 $db_name = 'test';
 
 function connectDB() {

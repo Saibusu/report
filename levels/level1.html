@@ -176,6 +176,62 @@
       </a>
     </div>
 
-    <script src="level.js"></script>
+    <script>
+      let timerInterval;
+      let timerSeconds = 0;
+
+      function startTimer() {
+        timerInterval = setInterval(function () {
+          timerSeconds++;
+          const minutes = Math.floor(timerSeconds / 60);
+          const seconds = timerSeconds % 60;
+          document.getElementById("timer").textContent = `${minutes
+            .toString()
+            .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+        }, 1000);
+      }
+
+      function stopTimer() {
+        clearInterval(timerInterval);
+      }
+
+      function submitAnswer() {
+        stopTimer();
+        const userAnswer = document.getElementById("code").value.trim();
+
+        // 使用 AJAX 將答案發送到後端
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "submit_answer.php", true);
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+
+            if (response.status === "success") {
+              // 答案正確，更新分數並顯示成功訊息
+              document.getElementById("score").innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                分數: <span class="ml-1">${response.score}</span>
+              `;
+              alert(response.message);
+            } else {
+              // 答案錯誤，顯示錯誤訊息
+              alert(response.message);
+            }
+          }
+        };
+
+        // 發送答案到後端
+        xhr.send("answer=" + encodeURIComponent(userAnswer));
+
+        return false; // 阻止表單實際提交
+      }
+    </script>
   </body>
 </html>

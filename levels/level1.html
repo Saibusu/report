@@ -201,6 +201,16 @@
         const userAnswer = document.getElementById("code").value.trim();
         const levelId = document.getElementById("level_id").value; // 獲取關卡 ID
 
+        // 清除之前的提交紀錄
+        const existingMessages = document.querySelectorAll("form .bg-green-50, form .bg-red-50");
+        existingMessages.forEach(message => message.remove());
+        document.getElementById("score").innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          分數: <span class="ml-1">0</span>
+        `;
+
         // 使用 AJAX 將答案和關卡 ID 發送到後端
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "submit_answer.php", true);
@@ -211,12 +221,12 @@
             const response = JSON.parse(xhr.responseText);
 
             if (response.status === "success") {
-              // 答案正確，更新分數並顯示成功訊息
+              // 答案正確，顯示這一題的分數（100 分）
               document.getElementById("score").innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                分數: <span class="ml-1">${response.score}</span>
+                分數: <span class="ml-1">100</span>
               `;
               // 顯示「答題成功」訊息
               const successMessage = document.createElement("div");

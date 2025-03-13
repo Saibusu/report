@@ -40,7 +40,7 @@ if ($level_id <= 0) {
     exit;
 }
 
-// 從 answers 表格中獲取該關卡的正確答案（假設你已經按照之前的建議創建了 answers 表格）
+// 從 answers 表格中獲取該關卡的正確答案（假設你已經創建了 answers 表格）
 $sql = "SELECT correct_answer FROM answers WHERE level_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $level_id);
@@ -65,19 +65,11 @@ if ($answer === $correct_answer) {
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
-        // 獲取更新後的分數
-        $sql = "SELECT score FROM self_leaderboard WHERE user_schoolnum = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $new_score = $row['score'];
-
+        // 不再查詢總分，直接返回這一題的分數
         $response = [
             'status' => 'success',
             'message' => '答題成功！已增加 100 分。',
-            'score' => $new_score
+            'score' => 100 // 固定返回這一題的分數
         ];
     } else {
         // 如果沒有更新，可能是用戶記錄不存在，插入一條新記錄
@@ -90,7 +82,7 @@ if ($answer === $correct_answer) {
             $response = [
                 'status' => 'success',
                 'message' => '答題成功！已增加 100 分。',
-                'score' => 100
+                'score' => 100 // 固定返回這一題的分數
             ];
         } else {
             $response = ['status' => 'error', 'message' => '更新分數失敗'];

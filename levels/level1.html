@@ -99,6 +99,7 @@
       </div>
 
       <form onsubmit="return submitAnswer();" class="w-full">
+        <input type="hidden" id="level_id" name="level_id" value="1" /> <!-- 隱藏欄位，用來傳遞關卡 ID -->
         <label for="code" class="block text-gray-700 text-lg font-bold mb-2"
           >作答區</label
         >
@@ -198,14 +199,12 @@
       function submitAnswer() {
         stopTimer();
         const userAnswer = document.getElementById("code").value.trim();
+        const levelId = document.getElementById("level_id").value; // 獲取關卡 ID
 
-        // 使用 AJAX 將答案發送到後端
+        // 使用 AJAX 將答案和關卡 ID 發送到後端
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "submit_answer.php", true);
-        xhr.setRequestHeader(
-          "Content-Type",
-          "application/x-www-form-urlencoded"
-        );
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4 && xhr.status === 200) {
@@ -219,16 +218,40 @@
                 </svg>
                 分數: <span class="ml-1">${response.score}</span>
               `;
-              alert(response.message);
+              // 顯示「答題成功」訊息
+              const successMessage = document.createElement("div");
+              successMessage.className = "p-3 bg-green-50 rounded-md border border-green-200 mt-4";
+              successMessage.innerHTML = `
+                <p class="flex items-center text-green-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <strong>答題成功！</strong>
+                </p>
+                <p class="mt-2 text-green-600">已增加 100 分！</p>
+              `;
+              document.querySelector("form").appendChild(successMessage);
             } else {
               // 答案錯誤，顯示錯誤訊息
-              alert(response.message);
+              const errorMessage = document.createElement("div");
+              errorMessage.className = "p-3 bg-red-50 rounded-md border border-red-200 mt-4";
+              errorMessage.innerHTML = `
+                <p class="flex items-center text-red-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <strong>答案錯誤！</strong>
+                </p>
+                <p class="mt-2 text-red-600">${response.message}</p>
+              `;
+              document.querySelector("form").appendChild(errorMessage);
             }
           }
         };
 
-        // 發送答案到後端
-        xhr.send("answer=" + encodeURIComponent(userAnswer));
+        // 發送答案和關卡 ID 到後端
+        const data = "answer=" + encodeURIComponent(userAnswer) + "&level_id=" + encodeURIComponent(levelId);
+        xhr.send(data);
 
         return false; // 阻止表單實際提交
       }

@@ -23,33 +23,52 @@ function connectDB() {
 // 連接到資料庫
 $conn = connectDB();
 
-// 接收前端發來的答案
+// 接收前端發來的資料
 $answer = isset($_POST['answer']) ? trim($_POST['answer']) : '';
-$user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : ''; // 假設 session 中存儲了用戶的 email
+$level_id = isset($_POST['level_id']) ? intval($_POST['level_id']) : 0; // 獲取關卡 ID
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : ''; // 使用 school_num 作為用戶 ID
 
 // 檢查用戶是否登入
-if (empty($user_email)) {
+if (empty($user_id)) {
     echo json_encode(['status' => 'error', 'message' => '請先登入']);
     exit;
 }
 
-// 定義正確答案（GCD(2740, 1760) = 20）
-$correct_answer = 20;
+// 檢查關卡 ID 是否有效
+if ($level_id <= 0) {
+    echo json_encode(['status' => 'error', 'message' => '無效的關卡 ID']);
+    exit;
+}
+
+// 從 answers 表格中獲取該關卡的正確答案（假設你已經按照之前的建議創建了 answers 表格）
+$sql = "SELECT correct_answer FROM answers WHERE level_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $level_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    echo json_encode(['status' => 'error', 'message' => '找不到該關卡的答案']);
+    exit;
+}
+
+$row = $result->fetch_assoc();
+$correct_answer = $row['correct_answer'];
 
 // 檢查答案是否正確
 $response = [];
-if ($answer == $correct_answer) {
-    // 答案正確，增加 100 分
-    $sql = "UPDATE first_week SET score = score + 100 WHERE email = ?";
+if ($answer === $correct_answer) {
+    // 答案正確，增加 100 分到 self_leaderboard
+    $sql = "UPDATE self_leaderboard SET score = score + 100 WHERE user_schoolnum = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $user_email);
+    $stmt->bind_param("i", $user_id); // user_schoolnum 是 INT 類型
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
         // 獲取更新後的分數
-        $sql = "SELECT score FROM first_week WHERE email = ?";
+        $sql = "SELECT score FROM self_leaderboard WHERE user_schoolnum = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $user_email);
+        $stmt->bind_param("i", $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
@@ -57,11 +76,25 @@ if ($answer == $correct_answer) {
 
         $response = [
             'status' => 'success',
-            'message' => '答案正確！已增加 100 分。',
+            'message' => '答題成功！已增加 100 分。',
             'score' => $new_score
         ];
     } else {
-        $response = ['status' => 'error', 'message' => '更新分數失敗'];
+        // 如果沒有更新，可能是用戶記錄不存在，插入一條新記錄
+        $sql = "INSERT INTO self_leaderboard (user_schoolnum, score) VALUES (?, 100)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = [
+                'status' => 'success',
+                'message' => '答題成功！已增加 100 分。',
+                'score' => 100
+            ];
+        } else {
+            $response = ['status' => 'error', 'message' => '更新分數失敗'];
+        }
     }
 } else {
     // 答案錯誤

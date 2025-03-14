@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>闖關遊戲排行榜</title>
     <link rel="stylesheet" href="leaderboard.css" />
+    <style>
+      /* 內聯 CSS 確保按鈕和切換效果 */
+      .toggle-button {
+        margin: 10px 0;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      .toggle-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar">
@@ -21,7 +37,8 @@
 
     <div class="main-content">
       <div class="container">
-        <h1>排行榜</h1>
+        <h1>個人排行榜</h1>
+        <button class="toggle-button" id="toggleButton" onclick="toggleLeaderboard()">團隊</button>
         <div class="leaderboard">
           <div class="header">
             <span>排名</span>
@@ -42,7 +59,73 @@
       function goBack() {
         window.location.href = "/report/home/home.html";
       }
+
+      // 切換排行榜功能
+      function toggleLeaderboard() {
+        const button = document.getElementById("toggleButton");
+        const leaderboardBody = document.getElementById("leaderboard-body");
+
+        if (button.textContent === "團隊") {
+          // 切換到團隊排行榜
+          fetch("/report/leaderboard/team_leaderboard.php?limit=10")
+            .then(response => response.json())
+            .then(data => {
+              let html = "";
+              data.forEach(item => {
+                html += `<div class="row">
+                          <span>${item.rank}</span>
+                          <span>${item.team_name}</span>
+                          <span>${item.team_score}</span>
+                          <span>${item.team_solved}</span>
+                        </div>`;
+              });
+              leaderboardBody.innerHTML = html;
+              button.textContent = "個人";
+              document.querySelector("h1").textContent = "團隊排行榜";
+            })
+            .catch(error => console.error("錯誤:", error));
+        } else {
+          // 切換回個人排行榜
+          fetch("/report/leaderboard/leaderboard.php?limit=10")
+            .then(response => response.json())
+            .then(data => {
+              let html = "";
+              data.forEach(item => {
+                html += `<div class="row">
+                          <span>${item.rank}</span>
+                          <span>${item.player_name}</span>
+                          <span>${item.score}</span>
+                          <span>${item.levels_cleared}</span>
+                        </div>`;
+              });
+              leaderboardBody.innerHTML = html;
+              button.textContent = "團隊";
+              document.querySelector("h1").textContent = "個人排行榜";
+            })
+            .catch(error => console.error("錯誤:", error));
+        }
+      }
+
+      // 頁面加載時初始化個人排行榜
+      window.onload = function() {
+        fetch("/report/leaderboard/leaderboard.php?limit=10")
+          .then(response => response.json())
+          .then(data => {
+            let html = "";
+            data.forEach(item => {
+              html += `<div class="row">
+                        <span>${item.rank}</span>
+                        <span>${item.player_name}</span>
+                        <span>${item.score}</span>
+                        <span>${item.levels_cleared}</span>
+                      </div>`;
+            });
+            document.getElementById("leaderboard-body").innerHTML = html;
+          })
+          .catch(error => console.error("錯誤:", error));
+      };
     </script>
+    <!-- 保留原有的 Cloudflare 腳本 -->
     <script>
       (function () {
         function c() {

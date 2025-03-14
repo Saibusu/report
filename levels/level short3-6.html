@@ -14,7 +14,10 @@
     />
     <link rel="stylesheet" href="level.css" />
   </head>
-  <body onload="startTimer()" class="text-gray-800 min-h-screen flex flex-col items-center py-6">
+  <body
+    onload="startTimer()"
+    class="text-gray-800 min-h-screen flex flex-col items-center py-6"
+  >
     <nav class="navbar">
       <div class="nav-container">
         <a href="/report/home/home.html" class="logo">密碼學闖關遊戲</a>
@@ -31,17 +34,19 @@
       <h1 class="text-4xl font-bold text-indigo-700 mb-2">密碼學闖關遊戲</h1>
     </header>
 
-    <div class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card">
+    <div
+      class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
+    >
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-2xl font-bold text-indigo-700">簡答題 #6：凱薩加密法</h2>
-        <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">Easy</span>
+        <span
+          class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
+          >Easy</span
+        >
       </div>
       <div class="prose max-w-none">
         <p class="text-lg mb-4">
           已知明文為 <strong>HELLO</strong>，使用凱薩加密法 (Caesar Cipher) 進行加密，密鑰為 <strong>3</strong>，請計算出加密後的密文。
-        </p>
-        <p class="text-lg mb-4">
-          
         </p>
       </div>
     </div>
@@ -84,30 +89,84 @@
         </div>
       </div>
       <form onsubmit="return submitAnswer();" class="w-full">
-        <label for="answer" class="block text-gray-700 text-lg font-bold mb-2">作答區</label>
+        <input type="hidden" id="level_id" name="level_id" value="3-6" />
+        <label for="code" class="block text-gray-700 text-lg font-bold mb-2"
+          >作答區</label
+        >
         <textarea
-          id="answer"
-          name="answer"
-          rows="5"
+          id="code"
+          name="code"
+          rows="10"
           class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4 font-mono"
-          placeholder="在這裡輸入你的答案..."></textarea>
+          placeholder="在這裡輸入你的答案..."
+        ></textarea>
         <button
           type="submit"
-          class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200 flex items-center">
+          class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200 flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
           提交並驗證
         </button>
       </form>
     </div>
 
     <div class="w-full max-w-5xl flex justify-between items-center mb-8">
-      <a href="level short3-5.html" class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200">
-        返回上一關
+      <a
+        href="level short3-5.html"
+        class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        上一關
       </a>
-      <a href="level short3-7.html" class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200">
+      <a
+        href="level short3-7.html"
+        class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
+      >
         下一關
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 ml-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
       </a>
     </div>
 
     <script src="level.js"></script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'920293a68aa3c022',t:'MTc0MTk0Mjc4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
   </body>
 </html>

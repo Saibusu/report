@@ -17,42 +17,73 @@ function stopTimer() {
 }
 
 function submitAnswer() {
-  stopTimer();
-  const userCode = document.getElementById("code").value;
+  stopTimer(); // 停止計時器
+  const userAnswer = document.getElementById("code").value.trim(); // 獲取用戶輸入
+  const levelId = document.getElementById("level_id").value; // 獲取關卡 ID
 
-  // 在這裡處理表單提交，這只是前端示例
-  document.getElementById("user-code-display").textContent = userCode;
+  // 清除之前的提交紀錄
+  const existingMessages = document.querySelectorAll("form .bg-green-50, form .bg-red-50");
+  existingMessages.forEach(message => message.remove());
+  document.getElementById("score").innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    分數: <span class="ml-1">0</span>
+  `;
 
-  // 模擬輸出結果
-  const output = "4a6acd73f528662d13207cf429a42593";
-  document.getElementById("user-output").textContent = output;
+  // 使用 AJAX 將答案和關卡 ID 發送到後端
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "submit_answer.php", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-  // 模擬比對標準答案
-  const expectedOutput = "4a6acd73f528662d13207cf429a42593";
-  if (output === expectedOutput) {
-    document.getElementById("comparison-result").innerHTML = `
-          <div class='p-3 bg-green-50 rounded-md border border-green-200'>
-            <p class='flex items-center text-green-700'><svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5 mr-2' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg><strong>完全符合！</strong></p>
-            <p class='mt-2 text-green-600'>你的輸出與標準答案完全一致，獲得滿分！</p>
-          </div>
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+
+      if (response.status === "success") {
+        // 答案正確，停止計時器（已在 submitAnswer 開頭執行）
+        // 顯示這一題的分數（100 分）
+        document.getElementById("score").innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          分數: <span class="ml-1">100</span>
         `;
-    document.getElementById("score-display").textContent = "100";
-    document.getElementById("score-display").className =
-      "text-3xl font-bold text-green-600";
-  } else {
-    document.getElementById("comparison-result").innerHTML = `
-          <div class='p-3 bg-red-50 rounded-md border border-red-200'>
-            <p class='flex items-center text-red-700'><svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5 mr-2' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z' /></svg><strong>不符合！</strong></p>
-            <p class='mt-2 text-red-600'>你的輸出與標準答案不一致。請檢查你的解密方法或密鑰是否正確。</p>
-          </div>
+        // 顯示「答題成功」訊息
+        const successMessage = document.createElement("div");
+        successMessage.className = "p-3 bg-green-50 rounded-md border border-green-200 mt-4";
+        successMessage.innerHTML = `
+          <p class="flex items-center text-green-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <strong>答題成功！</strong>
+          </p>
+          <p class="mt-2 text-green-600">已增加 100 分！</p>
         `;
-    document.getElementById("score-display").textContent = "0";
-    document.getElementById("score-display").className =
-      "text-3xl font-bold text-red-500";
-  }
+        document.querySelector("form").appendChild(successMessage);
+      } else {
+        // 答案錯誤，計時器繼續運行（不重啟）
+        // 顯示錯誤訊息
+        const errorMessage = document.createElement("div");
+        errorMessage.className = "p-3 bg-red-50 rounded-md border border-red-200 mt-4";
+        errorMessage.innerHTML = `
+          <p class="flex items-center text-red-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <strong>答案錯誤！</strong>
+          </p>
+          <p class="mt-2 text-red-600">${response.message}</p>
+        `;
+        document.querySelector("form").appendChild(errorMessage);
+      }
+    }
+  };
 
-  // 顯示比對結果區塊
-  document.getElementById("result-section").classList.remove("hidden");
+  // 發送答案和關卡 ID 到後端
+  const data = "answer=" + encodeURIComponent(userAnswer) + "&level_id=" + encodeURIComponent(levelId);
+  xhr.send(data);
 
   return false; // 阻止表單實際提交
 }

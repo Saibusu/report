@@ -43,7 +43,7 @@ if ($level_id <= 0) {
 // 從 answers 表格中獲取該關卡的正確答案（假設你已經創建了 answers 表格）
 $sql = "SELECT correct_answer FROM answers WHERE level_id = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $level_id);
+$stmt->bind_param("i", $level_id); // 修正為 "i"，因為 level_id 是整數
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -55,28 +55,30 @@ if ($result->num_rows === 0) {
 $row = $result->fetch_assoc();
 $correct_answer = $row['correct_answer'];
 
+// 查詢當前用戶的統計數據
+$sql = "SELECT completed_levels, total_solved, total_submissions FROM self_leaderboard WHERE user_schoolnum = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$completed_levels = $row['completed_levels'] ?? '';
+$total_solved = $row['total_solved'] ?? 0;
+$total_submissions = $row['total_submissions'] ?? 0;
+
+// 每次提交都增加 total_submissions
+$new_total_submissions = $total_submissions + 1;
+
 // 檢查答案是否正確
 $response = [];
 if ($answer === $correct_answer) {
-    // 檢查是否已完成該關卡
-    $sql = "SELECT completed_levels, total_solved, total_submissions FROM self_leaderboard WHERE user_schoolnum = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $completed_levels = $row['completed_levels'] ?? '';
-    $total_solved = $row['total_solved'] ?? 0;
-    $total_submissions = $row['total_submissions'] ?? 0;
-
     if (strpos($completed_levels, "level_$level_id") !== false) {
         $response = ['status' => 'error', 'message' => '你已經完成該關卡，不能重複加分'];
     } else {
         // 更新分數、完成狀態、總答對題數和總提交次數
-        $sql = "UPDATE self_leaderboard SET score = score + 100, completed_levels = CONCAT(completed_levels, ',level_$level_id'), total_solved = ?, total_submissions = ? + 1 WHERE user_schoolnum = ?";
+        $sql = "UPDATE self_leaderboard SET score = score + 100, completed_levels = CONCAT(completed_levels, ',level_$level_id'), total_solved = ?, total_submissions = ? WHERE user_schoolnum = ?";
         $stmt = $conn->prepare($sql);
         $new_total_solved = $total_solved + 1;
-        $new_total_submissions = $total_submissions + 1;
         $stmt->bind_param("iii", $new_total_solved, $new_total_submissions, $user_id);
         $stmt->execute();
 
@@ -88,10 +90,10 @@ if ($answer === $correct_answer) {
             ];
         } else {
             // 如果沒有更新，可能是用戶記錄不存在，插入一條新記錄
-            $sql = "INSERT INTO self_leaderboard (user_schoolnum, score, completed_levels, total_solved, total_submissions) VALUES (?, 100, ?, 1, 1)";
+            $sql = "INSERT INTO self_leaderboard (user_schoolnum, score, completed_levels, total_solved, total_submissions) VALUES (?, 100, ?, 1, ?)";
             $initial_completed_levels = "level_$level_id";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("is", $user_id, $initial_completed_levels);
+            $stmt->bind_param("isi", $user_id, $initial_completed_levels, $new_total_submissions);
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
@@ -107,17 +109,8 @@ if ($answer === $correct_answer) {
     }
 } else {
     // 答案錯誤，只更新 total_submissions
-    $sql = "SELECT total_submissions FROM self_leaderboard WHERE user_schoolnum = ?";
+    $sql = "UPDATE self_leaderboard SET total_submissions = ? WHERE user_schoolnum = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $total_submissions = $row['total_submissions'] ?? 0;
-
-    $sql = "UPDATE self_leaderboard SET total_submissions = ? + 1 WHERE user_schoolnum = ?";
-    $stmt = $conn->prepare($sql);
-    $new_total_submissions = $total_submissions + 1;
     $stmt->bind_param("ii", $new_total_submissions, $user_id);
     $stmt->execute();
 

@@ -25,7 +25,7 @@ $conn = connectDB();
 
 // 接收前端發來的資料
 $answer = isset($_POST['answer']) ? trim($_POST['answer']) : '';
-$level_id = isset($_POST['level_id']) ? intval($_POST['level_id']) : 0; // 獲取關卡 ID
+$level_id = isset($_POST['level_id']) ? $_POST['level_id'] : ''; // VARCHAR 不需要轉成 int
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : ''; // 使用 school_num 作為用戶 ID
 
 // 檢查用戶是否登入
@@ -35,15 +35,15 @@ if (empty($user_id)) {
 }
 
 // 檢查關卡 ID 是否有效
-if ($level_id <= 0) {
+if (empty($level_id)) {
     echo json_encode(['status' => 'error', 'message' => '無效的關卡 ID']);
     exit;
 }
 
-// 從 answers 表格中獲取該關卡的正確答案（假設你已經創建了 answers 表格）
+// 從 answers 表格中獲取該關卡的正確答案
 $sql = "SELECT correct_answer FROM answers WHERE level_id = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $level_id); // 修正為 "i"，因為 level_id 是整數
+$stmt->bind_param("s", $level_id); // level_id 是 VARCHAR，使用 "s"
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -58,7 +58,7 @@ $correct_answer = $row['correct_answer'];
 // 查詢當前用戶的統計數據
 $sql = "SELECT completed_levels, total_solved, total_submissions FROM self_leaderboard WHERE user_schoolnum = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("i", $user_id); // user_id 是 INT，使用 "i"
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
@@ -79,7 +79,7 @@ if ($answer === $correct_answer) {
         $sql = "UPDATE self_leaderboard SET score = score + 100, completed_levels = CONCAT(completed_levels, ',level_$level_id'), total_solved = ?, total_submissions = ? WHERE user_schoolnum = ?";
         $stmt = $conn->prepare($sql);
         $new_total_solved = $total_solved + 1;
-        $stmt->bind_param("iii", $new_total_solved, $new_total_submissions, $user_id);
+        $stmt->bind_param("iii", $new_total_solved, $new_total_submissions, $user_id); // 三個參數都是 INT，使用 "iii"
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -93,7 +93,7 @@ if ($answer === $correct_answer) {
             $sql = "INSERT INTO self_leaderboard (user_schoolnum, score, completed_levels, total_solved, total_submissions) VALUES (?, 100, ?, 1, ?)";
             $initial_completed_levels = "level_$level_id";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("isi", $user_id, $initial_completed_levels, $new_total_submissions);
+            $stmt->bind_param("isi", $user_id, $initial_completed_levels, $new_total_submissions); // user_schoolnum 是 INT ("i")，completed_levels 是字串 ("s")，total_submissions 是 INT ("i")
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
@@ -111,7 +111,7 @@ if ($answer === $correct_answer) {
     // 答案錯誤，只更新 total_submissions
     $sql = "UPDATE self_leaderboard SET total_submissions = ? WHERE user_schoolnum = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $new_total_submissions, $user_id);
+    $stmt->bind_param("ii", $new_total_submissions, $user_id); // 兩個參數都是 INT，使用 "ii"
     $stmt->execute();
 
     $response = ['status' => 'error', 'message' => '答案錯誤'];

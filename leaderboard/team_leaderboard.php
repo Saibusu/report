@@ -1,6 +1,6 @@
 <?php
 // 確保 db_connect.php 包含資料庫連線函數，並呼叫它來建立連線
-require "../LoginRegister/db_connect.php";
+require '../../上課/專題製作/report/LoginRegister/db_connect.php';
 $conn = connectDB(); // 呼叫 connectDB() 函數並將結果賦值給 $conn
 
 // 如果連線失敗，檢查並處理錯誤

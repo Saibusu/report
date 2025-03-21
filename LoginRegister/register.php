@@ -9,12 +9,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'] ?? '';
 
     if (empty($name) || empty($school_num) || empty($team) || empty($email) || empty($password)) { // 包含 team 檢查
-        header("Location: /report/LoginRegister/register.html?error=" . urlencode("所有欄位都必須填寫"));
+        header("Location: ./register.html?error=" . urlencode("所有欄位都必須填寫"));
         exit;
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("Location: /report/LoginRegister/register.html?error=" . urlencode("Email 格式不正確"));
+        header("Location: ./register.html?error=" . urlencode("Email 格式不正確"));
         exit;
     }
 
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $stmt->close();
         $conn->close();
-        header("Location: /report/LoginRegister/register.html?error=" . urlencode($error));
+        header("Location: ./register.html?error=" . urlencode($error));
         exit;
     }
 
@@ -43,14 +43,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("sisss", $name, $school_num, $team, $email, $password); // 調整參數類型和順序
 
     if ($stmt->execute()) {
-        header("Location: /report/LoginRegister/login.html?success=" . urlencode("註冊成功，請登入"));
+        header("Location: ./login.html?success=" . urlencode("註冊成功，請登入"));
     } else {
-        header("Location: /report/LoginRegister/register.html?error=" . urlencode("註冊失敗: " . $stmt->error));
+        header("Location: ./register.html?error=" . urlencode("註冊失敗: " . $stmt->error));
     }
 
     $stmt->close();
     $conn->close();
 } else {
-    header("Location: /report/LoginRegister/register.html?error=" . urlencode("請求方式錯誤"));
+    header("Location: ./register.html?error=" . urlencode("請求方式錯誤"));
 }
 ?>

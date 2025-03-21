@@ -19,7 +19,7 @@
         <?php echo htmlspecialchars($_GET['success']); ?>
       </div>
       <?php endif; ?>
-      <form id="loginForm" action="/report/LoginRegister/login.php" method="POST">
+      <form id="loginForm" action="./login.php" method="POST">
         <div class="input-group">
           <label for="school_num">學號</label>
           <input type="text" id="school_num" name="school_num" required />
@@ -30,10 +30,10 @@
         </div>
         <button type="submit" class="btn">登入</button>
         <div class="switch">
-          還沒有帳號？<a href="/report/LoginRegister/register.html">註冊新帳號</a>
+          還沒有帳號？<a href="./register.html">註冊新帳號</a>
         </div>
         <div class="switch" style="margin-top: 10px">
-          <a href="/report/LoginRegister/index.html">返回選擇</a>
+          <a href="./index.html">返回選擇</a>
         </div>
       </form>
     </div>

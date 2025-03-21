@@ -25,12 +25,12 @@
   <body>
     <nav class="navbar">
       <div class="nav-container">
-        <a href="index.html" class="logo">密碼學闖關遊戲</a>
+        <a href="../home/home.html" class="logo">密碼學闖關遊戲</a>
         <div class="nav-links">
-          <a href="/report/user/dashboard.php">用戶</a>
-          <a href="/report/home/home.html">首頁</a>
-          <a href="/report/levels/levels.html">關卡</a>
-          <a href="/report/leaderboard/leaderboard.html">排行榜</a>
+          <a href="../user/dashboard.php">用戶</a>
+          <a href="../home/home.html">首頁</a>
+          <a href="../levels/levels.html">關卡</a>
+          <a href="./leaderboard.html">排行榜</a>
         </div>
       </div>
     </nav>
@@ -57,7 +57,7 @@
     <script src="leaderboard.js"></script>
     <script>
       function goBack() {
-        window.location.href = "/report/home/home.html";
+        window.location.href = "../home/home.html";
       }
 
       // 切換排行榜功能
@@ -67,7 +67,7 @@
 
         if (button.textContent === "團隊") {
           // 切換到團隊排行榜
-          fetch("/report/leaderboard/team_leaderboard.php?limit=10")
+          fetch("./team_leaderboard.php?limit=10")
             .then(response => response.json())
             .then(data => {
               let html = "";
@@ -86,7 +86,7 @@
             .catch(error => console.error("錯誤:", error));
         } else {
           // 切換回個人排行榜
-          fetch("/report/leaderboard/leaderboard.php?limit=10")
+          fetch("./leaderboard.php?limit=10")
             .then(response => response.json())
             .then(data => {
               let html = "";
@@ -108,7 +108,7 @@
 
       // 頁面加載時初始化個人排行榜
       window.onload = function() {
-        fetch("/report/leaderboard/leaderboard.php?limit=10")
+        fetch("./leaderboard.php?limit=10")
           .then(response => response.json())
           .then(data => {
             let html = "";

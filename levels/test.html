@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>編輯/新增關卡 - 密碼學闖關遊戲</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="level.css" />
+  </head>
+  <body class="text-gray-800 min-h-screen flex flex-col items-center py-6">
+    <!-- 導覽列開始 -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="../home/home.html" class="logo">密碼學闖關遊戲</a>
+        <div class="nav-links">
+          <a href="../user/dashboard.php">用戶</a>
+          <a href="../home/home.html">首頁</a>
+          <a href="./levels.html">關卡</a>
+          <a href="../leaderboard/leaderboard.html">排行榜</a>
+        </div>
+      </div>
+    </nav>
+
+    <header class="w-full max-w-5xl flex flex-col items-center mb-6 mt-20">
+      <h1 class="text-4xl font-bold text-indigo-700 mb-2">編輯/新增關卡</h1>
+    </header>
+
+    <!-- 題目編輯區塊 -->
+    <div
+      class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
+    >
+      <form id="levelForm" action="generate_level.php" method="POST">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold text-indigo-700">關卡標題</h2>
+          <select
+            name="difficulty"
+            class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
+          >
+            <option value="簡單">Easy</option>
+            <option value="中等">Medium</option>
+            <option value="困難">Hard</option>
+          </select>
+        </div>
+        <div class="prose max-w-none">
+          <!-- 關卡 ID -->
+          <label for="level_id" class="block text-lg font-bold mb-2"
+            >關卡 ID：</label
+          >
+          <input
+            type="text"
+            id="level_id"
+            name="level_id"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
+            placeholder="請輸入關卡 ID（例如：3-1）"
+            required
+          />
+
+          <!-- 關卡標題 -->
+          <label for="questionTitle" class="block text-lg font-bold mb-2"
+            >關卡標題：</label
+          >
+          <input
+            type="text"
+            id="questionTitle"
+            name="questionTitle"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
+            placeholder="請輸入關卡標題..."
+            required
+          />
+
+          <!-- 關卡描述 -->
+          <label for="description" class="block text-lg font-bold mb-2"
+            >關卡描述：</label
+          >
+          <textarea
+            id="description"
+            name="questionDescription"
+            rows="4"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
+            placeholder="請輸入關卡描述..."
+            required
+          ></textarea>
+
+          <!-- 提示 -->
+          <div class="bg-gray-50 p-4 rounded-md mb-4">
+            <h3 class="text-md font-semibold mb-2">提示：</h3>
+            <textarea
+              id="hint"
+              name="hints"
+              rows="2"
+              class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="請輸入提示內容..."
+            ></textarea>
+          </div>
+
+          <!-- 指示 -->
+          <label for="instructions" class="block text-lg font-bold mb-2"
+            >指示：</label
+          >
+          <textarea
+            id="instructions"
+            name="instructions"
+            rows="2"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"
+            placeholder="請輸入指示內容..."
+            required
+          ></textarea>
+        </div>
+
+        <!-- 上傳按鈕 -->
+        <button
+          type="submit"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-200 flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
+          上傳檔案
+        </button>
+      </form>
+    </div>
+
+    <!-- 導航按鈕 -->
+    <div class="w-full max-w-5xl flex justify-between items-center mb-8">
+      <a
+        href="./levels.html"
+        class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        返回選關
+      </a>
+      <a
+        href="./levels.html"
+        class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
+      >
+        儲存並返回
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 ml-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </a>
+    </div>
+  </body>
+</html>

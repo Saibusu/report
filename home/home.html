@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>遊戲首頁</title>
+    <!-- 引入 SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
       * {
         margin: 0;
@@ -92,37 +94,6 @@
         text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
       }
 
-      .level-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 30px;
-        margin: 0 auto;
-      }
-
-      .level-button {
-        padding: 20px 25px;
-        border: none;
-        border-radius: 10px;
-        background: linear-gradient(to bottom right, #6a82fb, #4b13cf);
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-      }
-
-      .level-button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.25);
-        background: linear-gradient(to bottom right, #5a72eb, #4b13cf);
-      }
-
-      .level-button:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(106, 130, 251, 0.7);
-      }
-
       /* 響應式設計 */
       @media (max-width: 768px) {
         .nav-container {
@@ -161,5 +132,39 @@
     </nav>
 
     <!-- 主要內容區域 -->
+    <div class="main-content">
+      <div class="container">
+        <h1>公告區</h1>
+        <!-- 移除關卡選擇按鈕 -->
+      </div>
+    </div>
+
+    <!-- 檢查 URL 參數並顯示提示視窗 -->
+    <script>
+      // 獲取 URL 參數
+      const urlParams = new URLSearchParams(window.location.search);
+      const status = urlParams.get('status');
+      const message = urlParams.get('message');
+
+      // 根據狀態顯示提示視窗
+      if (status && message) {
+        if (status === 'success') {
+          Swal.fire({
+            icon: 'success',
+            title: '成功',
+            text: decodeURIComponent(message),
+          });
+        } else if (status === 'error') {
+          Swal.fire({
+            icon: 'error',
+            title: '失敗',
+            text: decodeURIComponent(message),
+          });
+        }
+
+        // 清除 URL 參數，避免刷新頁面時再次顯示提示
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    </script>
   </body>
 </html>

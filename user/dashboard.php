@@ -12,7 +12,7 @@ if ($conn === false || $conn->connect_error) {
 
 // 如果未登入，跳轉回 login.php
 if (!isset($_SESSION["user_id"])) {
-    header("Location: ../LoginRegister/login.php");
+    header("Location: login.php");
     exit;
 }
 
@@ -277,7 +277,6 @@ $leader_stmt->fetch();
         .action-button:active {
             transform: translateY(-1px);
         }
-<<<<<<< HEAD
 
         .action-button::after {
             content: '';
@@ -289,23 +288,6 @@ $leader_stmt->fetch();
             background: rgba(255, 255, 255, 0.2);
             transform: translateX(-100%);
             transition: transform 0.3s ease;
-=======
-        button { 
-            padding: 10px 20px; 
-            margin-top: 20px; 
-            background-color: #4CAF50; 
-            color: white; 
-            border: none; 
-            cursor: pointer; 
-            border-radius: 5px;
-            margin-right: 10px; /* 添加間距，與返回按鈕分開 */
-        }
-        .logout-button { 
-            background-color: #f44336; /* 紅色背景，與返回按鈕區分 */
-        }
-        .logout-button:hover { 
-            background-color: #da190b; 
->>>>>>> 380418c41ca7e9f4f1f160ae32e5f674ea407ecb
         }
 
         .action-button:hover::after {
@@ -379,7 +361,7 @@ $leader_stmt->fetch();
             <!-- 頭部區域 -->
             <div class="header-section" data-aos="fade-down" data-aos-duration="800">
                 <h1>用戶控制台</h1>
-                <p class="subtitle">查看您的個人資料和遊戲進度</p>
+                <p class="subtitle">查看您的個人資料和遊戲進度，追蹤您在密碼學闖關遊戲中的成就</p>
             </div>
             
             <div class="row">
@@ -469,7 +451,6 @@ $leader_stmt->fetch();
         </div>
     </div>
 
-<<<<<<< HEAD
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- AOS Animation Library -->
@@ -484,54 +465,6 @@ $leader_stmt->fetch();
             window.location.href = "../home/home.html";
         }
     </script>
-=======
-    <div class="stats">
-        <h2>競賽統計</h2>
-        <p>解題數: <?php echo $total_solved ?? 0; ?></p>
-        <p>提交次數: <?php echo $total_submissions ?? 0; ?></p>
-        <p>競賽積分: <?php echo $score ?? 1500; ?></p>
-        <p>最後提交時間: <?php echo htmlspecialchars($last_submit_time ?? '無'); ?></p>
-    </div>
-
-    <!-- 返回和登出按鈕 -->
-    <div>
-        <button onclick="goBack()">返回首頁</button>
-        <button class="logout-button" onclick="logout()">登出</button>
-    </div>
-</div>
-
-<script>
-    function goBack() {
-        window.location.href = "../home/home.html";
-    }
-
-    function logout() {
-        fetch('../LoginRegister/logout.php', { // 假設 logout.php 在 LoginRegister 目錄下
-            method: 'POST',
-            credentials: 'include' // 確保帶上 cookies
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                // 登出成功後重定向到 index.html
-                window.location.href = '../LoginRegister/index.html';
-            } else {
-                alert('登出失敗，請稍後再試。');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('登出過程中發生錯誤。');
-        });
-    }
-
-    // 防止返回上一頁
-    window.history.pushState(null, null, window.location.href);
-    window.onpopstate = function() {
-        window.history.pushState(null, null, window.location.href);
-    };
-</script>
->>>>>>> 380418c41ca7e9f4f1f160ae32e5f674ea407ecb
 
 </body>
 </html>

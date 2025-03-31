@@ -12,7 +12,7 @@ if ($conn === false || $conn->connect_error) {
 
 // 如果未登入，跳轉回 login.php
 if (!isset($_SESSION["user_id"])) {
-    header("Location: login.php");
+    header("Location: ../LoginRegister/login.php");
     exit;
 }
 
@@ -103,6 +103,13 @@ $leader_stmt->fetch();
             border: none; 
             cursor: pointer; 
             border-radius: 5px;
+            margin-right: 10px; /* 添加間距，與返回按鈕分開 */
+        }
+        .logout-button { 
+            background-color: #f44336; /* 紅色背景，與返回按鈕區分 */
+        }
+        .logout-button:hover { 
+            background-color: #da190b; 
         }
         button:hover { 
             background-color: #45a049; 
@@ -129,14 +136,43 @@ $leader_stmt->fetch();
         <p>最後提交時間: <?php echo htmlspecialchars($last_submit_time ?? '無'); ?></p>
     </div>
 
-    <!-- 返回按鈕 -->
-    <button onclick="goBack()">返回首頁</button>
+    <!-- 返回和登出按鈕 -->
+    <div>
+        <button onclick="goBack()">返回首頁</button>
+        <button class="logout-button" onclick="logout()">登出</button>
+    </div>
 </div>
 
 <script>
     function goBack() {
         window.location.href = "../home/home.html";
     }
+
+    function logout() {
+        fetch('../LoginRegister/logout.php', { // 假設 logout.php 在 LoginRegister 目錄下
+            method: 'POST',
+            credentials: 'include' // 確保帶上 cookies
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // 登出成功後重定向到 index.html
+                window.location.href = '../LoginRegister/index.html';
+            } else {
+                alert('登出失敗，請稍後再試。');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('登出過程中發生錯誤。');
+        });
+    }
+
+    // 防止返回上一頁
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function() {
+        window.history.pushState(null, null, window.location.href);
+    };
 </script>
 
 </body>

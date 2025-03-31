@@ -23,6 +23,12 @@ function connectDB() {
 // 連接到資料庫
 $conn = connectDB();
 
+// 檢查用戶是否已登入且為 admin
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !$_SESSION['is_admin']) {
+    header("Location: ../home/home.html?status=error&message=" . urlencode('只有管理員才能新增關卡'));
+    exit;
+}
+
 // 獲取表單資料
 $level_id = $_POST['level_id'] ?? '';
 $questionTitle = $_POST['questionTitle'] ?? '';

@@ -1,119 +1,3 @@
-<?php
-// 啟用 session 用來識別用戶（雖然此頁面可能不需要，但與後端一致）
-session_start();
-
-// 引入資料庫連線
-$db_host = '140.129.25.130';
-$db_user = 'Jay';
-$db_pass = 'jay0804';
-$db_name = 'test';
-
-function connectDB() {
-    global $db_host, $db_user, $db_pass, $db_name;
-    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
-
-    if ($conn->connect_error) {
-        die("資料庫連線失敗: " . $conn->connect_error);
-    }
-
-    $conn->set_charset("utf8mb4");
-    return $conn;
-}
-
-// 連接到資料庫
-$conn = connectDB();
-
-// 獲取表單資料
-$level_id = $_POST['level_id'] ?? '';
-$questionTitle = $_POST['questionTitle'] ?? '';
-$questionDescription = $_POST['questionDescription'] ?? '';
-$hints = $_POST['hints'] ?? '';
-$correct_answer = $_POST['correct_answer'] ?? ''; // 獲取答案
-$difficulty = $_POST['difficulty'] ?? '簡單';
-
-// 驗證必填欄位
-if (empty($level_id) || empty($questionTitle) || empty($questionDescription) || empty($correct_answer)) {
-    header("Location: ../home/home.html?status=error&message=" . urlencode('請填寫所有必填欄位'));
-    exit;
-}
-
-// 記錄接收到的數據到日誌（用於調試）
-error_log("Received data: level_id=$level_id, correct_answer=$correct_answer");
-
-// 檢查資料庫中是否已存在該 level_id
-$sql_check = "SELECT level_id FROM answers WHERE level_id = ?";
-$stmt_check = $conn->prepare($sql_check);
-$stmt_check->bind_param("s", $level_id);
-$stmt_check->execute();
-$result = $stmt_check->get_result();
-
-if ($result->num_rows > 0) {
-    header("Location: ../home/home.html?status=error&message=" . urlencode('該關卡 ID 已存在，請選擇不同的 level_id'));
-    exit;
-}
-
-// 插入答案到資料庫
-$sql = "INSERT INTO answers (level_id, correct_answer) VALUES (?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $level_id, $correct_answer); // level_id 和 correct_answer 都是 VARCHAR，使用 "ss"
-if (!$stmt->execute()) {
-    error_log("Database insert failed: " . $stmt->error);
-    header("Location: ../home/home.html?status=error&message=" . urlencode('無法將答案記錄到資料庫: ' . $stmt->error));
-    exit;
-}
-
-// 根據 level_id 生成檔案名稱（例如：level short3-1.html）
-$filename = __DIR__ . '/level' . $level_id . '.html';
-
-// 檢查檔案是否已存在
-if (file_exists($filename)) {
-    header("Location: ../home/home.html?status=error&message=" . urlencode('檔案已存在，請選擇不同的 level_id 或刪除現有檔案'));
-    exit;
-}
-
-// 確保 levels 目錄存在
-$directory = __DIR__;
-if (!is_dir($directory)) {
-    if (!mkdir($directory, 0755, true)) {
-        header("Location: ../home/home.html?status=error&message=" . urlencode('無法創建 levels 目錄'));
-        exit;
-    }
-}
-
-// 動態生成上一關和下一關的連結，並檢查檔案是否存在
-$level_parts = explode('-', $level_id);
-$chapter = $level_parts[0]; // 例如 "3"
-$level_number = intval($level_parts[1]); // 例如 "1"
-
-// 計算上一關和下一關的檔案名稱
-$prev_level_file = $level_number > 1 ? __DIR__ . "/level short{$chapter}-" . ($level_number - 1) . ".html" : null;
-$next_level_file = __DIR__ . "/level short{$chapter}-" . ($level_number + 1) . ".html";
-
-// 檢查檔案是否存在，決定連結
-$prev_level = $prev_level_file && file_exists($prev_level_file) ? "level short{$chapter}-" . ($level_number - 1) . ".html" : "levels.html";
-$next_level = file_exists($next_level_file) ? "level short{$chapter}-" . ($level_number + 1) . ".html" : "levels.html";
-
-// 根據難度設置標籤樣式
-$difficulty_class = '';
-switch ($difficulty) {
-    case '簡單':
-    case 'Easy':
-        $difficulty_class = 'bg-indigo-100 text-indigo-800';
-        break;
-    case '中等':
-    case 'Medium':
-        $difficulty_class = 'bg-orange-100 text-orange-800';
-        break;
-    case '困難':
-    case 'Hard':
-        $difficulty_class = 'bg-red-100 text-red-800';
-        break;
-    default:
-        $difficulty_class = 'bg-indigo-100 text-indigo-800'; // 預設為藍色
-}
-
-// 生成與 level short3-1.html 一致的 HTML 內容
-$htmlContent = <<<EOD
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -156,21 +40,21 @@ $htmlContent = <<<EOD
       class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
     >
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-indigo-700">關卡 #{$level_id}：{$questionTitle}</h2>
+        <h2 class="text-2xl font-bold text-indigo-700">關卡 #3-12：加法運算</h2>
         <span
-          class="{$difficulty_class} px-3 py-1 rounded-full text-sm font-medium"
-          >{$difficulty}</span
+          class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
+          >簡單</span
         >
       </div>
       <div class="prose max-w-none">
         <p class="text-lg mb-4">
-          {$questionDescription}
+          10+20=?
         </p>
 
         <div class="bg-gray-50 p-4 rounded-md mb-4">
           <h3 class="text-md font-semibold mb-2">提示：</h3>
           <ul class="list-disc pl-5 space-y-1">
-            <li>{$hints}</li>
+            <li>請在答案中填入?的數字</li>
           </ul>
         </div>
       </div>
@@ -215,7 +99,7 @@ $htmlContent = <<<EOD
       </div>
 
       <form onsubmit="return submitAnswer();" class="w-full">
-        <input type="hidden" id="level_id" name="level_id" value="{$level_id}" />
+        <input type="hidden" id="level_id" name="level_id" value="3-12" />
         <label for="code" class="block text-gray-700 text-lg font-bold mb-2"
           >作答區</label
         >
@@ -251,7 +135,7 @@ $htmlContent = <<<EOD
 
     <div class="w-full max-w-5xl flex justify-between items-center mb-8">
       <a
-        href="./{$prev_level}"
+        href="./level short3-11.html"
         class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
       >
         <svg
@@ -271,7 +155,7 @@ $htmlContent = <<<EOD
         返回選關
       </a>
       <a
-        href="./{$next_level}"
+        href="./levels.html"
         class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
       >
         下一關
@@ -295,16 +179,3 @@ $htmlContent = <<<EOD
     <script src="level.js"></script>
   </body>
 </html>
-EOD;
-
-// 儲存檔案
-if (file_put_contents($filename, $htmlContent) !== false) {
-    header("Location: ../home/home.html?status=success&message=" . urlencode('關卡生成成功！檔案名稱：level short' . $level_id . '.html'));
-} else {
-    header("Location: ../home/home.html?status=error&message=" . urlencode('無法寫入檔案'));
-}
-exit;
-
-// 關閉資料庫連線
-$conn->close();
-?>

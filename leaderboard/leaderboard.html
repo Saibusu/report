@@ -6,19 +6,54 @@
     <title>闖關遊戲排行榜</title>
     <link rel="stylesheet" href="leaderboard.css" />
     <style>
-      /* 內聯 CSS 確保按鈕和切換效果 */
-      .toggle-button {
-        margin: 10px 0;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
+      /* 藥丸型切換按鈕樣式 */
+      .toggle-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
       }
-      .toggle-button:hover {
-        background-color: #0056b3;
+
+      .pill-toggle {
+        display: flex;
+        background-color: #444;
+        border-radius: 30px;
+        position: relative;
+        overflow: hidden;
+        user-select: none;
+        min-width: 300px;
+        height: 40px;
+      }
+
+      .pill-toggle-option {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
+        transition: color 0.3s ease;
+      }
+
+      .pill-toggle-option.active {
+        color: #333;
+        font-weight: bold;
+      }
+
+      .pill-toggle-slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 50%;
+        background-color: white;
+        border-radius: 30px;
+        transition: transform 0.3s ease;
+      }
+
+      .pill-toggle-slider.right {
+        transform: translateX(100%);
       }
     </style>
   </head>
@@ -37,14 +72,32 @@
 
     <div class="main-content">
       <div class="container">
-        <h1>個人排行榜</h1>
-        <button class="toggle-button" id="toggleButton" onclick="toggleLeaderboard()">團隊</button>
+        <h1 id="leaderboard-title">個人排行榜</h1>
+        <div class="toggle-container">
+          <div class="pill-toggle">
+            <div class="pill-toggle-slider" id="toggle-slider"></div>
+            <div
+              class="pill-toggle-option active"
+              id="personal-option"
+              onclick="toggleLeaderboard('personal')"
+            >
+              個人
+            </div>
+            <div
+              class="pill-toggle-option"
+              id="team-option"
+              onclick="toggleLeaderboard('team')"
+            >
+              團隊
+            </div>
+          </div>
+        </div>
         <div class="leaderboard">
           <div class="header">
             <span>排名</span>
-            <span>玩家名稱</span>
-            <span>分數</span>
-            <span>通關數</span>
+            <span id="name-header">玩家名稱</span>
+            <span id="score-header">分數</span>
+            <span id="levels-header">通關數</span>
           </div>
           <div class="body" id="leaderboard-body">
             <!-- 動態數據將插入這裡 -->
@@ -54,24 +107,33 @@
       </div>
     </div>
 
-    <script src="leaderboard.js"></script>
     <script>
       function goBack() {
         window.location.href = "../home/home.html";
       }
 
       // 切換排行榜功能
-      function toggleLeaderboard() {
-        const button = document.getElementById("toggleButton");
+      function toggleLeaderboard(type) {
         const leaderboardBody = document.getElementById("leaderboard-body");
+        const leaderboardTitle = document.getElementById("leaderboard-title");
+        const nameHeader = document.getElementById("name-header");
+        const scoreHeader = document.getElementById("score-header");
+        const levelsHeader = document.getElementById("levels-header");
+        const personalOption = document.getElementById("personal-option");
+        const teamOption = document.getElementById("team-option");
+        const toggleSlider = document.getElementById("toggle-slider");
 
-        if (button.textContent === "團隊") {
+        if (type === "team") {
           // 切換到團隊排行榜
+          toggleSlider.classList.add("right");
+          personalOption.classList.remove("active");
+          teamOption.classList.add("active");
+
           fetch("./team_leaderboard.php?limit=10")
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
               let html = "";
-              data.forEach(item => {
+              data.forEach((item) => {
                 html += `<div class="row">
                           <span>${item.rank}</span>
                           <span>${item.team_name}</span>
@@ -80,17 +142,23 @@
                         </div>`;
               });
               leaderboardBody.innerHTML = html;
-              button.textContent = "個人";
-              document.querySelector("h1").textContent = "團隊排行榜";
+              leaderboardTitle.textContent = "團隊排行榜";
+              nameHeader.textContent = "團隊名稱";
+              scoreHeader.textContent = "團隊分數";
+              levelsHeader.textContent = "團隊通關數";
             })
-            .catch(error => console.error("錯誤:", error));
+            .catch((error) => console.error("錯誤:", error));
         } else {
           // 切換回個人排行榜
+          toggleSlider.classList.remove("right");
+          personalOption.classList.add("active");
+          teamOption.classList.remove("active");
+
           fetch("./leaderboard.php?limit=10")
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
               let html = "";
-              data.forEach(item => {
+              data.forEach((item) => {
                 html += `<div class="row">
                           <span>${item.rank}</span>
                           <span>${item.player_name}</span>
@@ -99,20 +167,22 @@
                         </div>`;
               });
               leaderboardBody.innerHTML = html;
-              button.textContent = "團隊";
-              document.querySelector("h1").textContent = "個人排行榜";
+              leaderboardTitle.textContent = "個人排行榜";
+              nameHeader.textContent = "玩家名稱";
+              scoreHeader.textContent = "分數";
+              levelsHeader.textContent = "通關數";
             })
-            .catch(error => console.error("錯誤:", error));
+            .catch((error) => console.error("錯誤:", error));
         }
       }
 
       // 頁面加載時初始化個人排行榜
-      window.onload = function() {
+      window.onload = function () {
         fetch("./leaderboard.php?limit=10")
-          .then(response => response.json())
-          .then(data => {
+          .then((response) => response.json())
+          .then((data) => {
             let html = "";
-            data.forEach(item => {
+            data.forEach((item) => {
               html += `<div class="row">
                         <span>${item.rank}</span>
                         <span>${item.player_name}</span>
@@ -122,7 +192,7 @@
             });
             document.getElementById("leaderboard-body").innerHTML = html;
           })
-          .catch(error => console.error("錯誤:", error));
+          .catch((error) => console.error("錯誤:", error));
       };
     </script>
     <!-- 保留原有的 Cloudflare 腳本 -->

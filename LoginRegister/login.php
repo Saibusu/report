@@ -11,8 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $conn = connectDB(); // 這裡調用統一的 connectDB()
-    
-    // 如果 connectDB() 失敗，會直接 die()，所以這裡不需要額外檢查
+
+    // 查詢用戶
     $stmt = $conn->prepare("SELECT * FROM users WHERE school_num = ?");
     $stmt->bind_param("i", $school_num);
     $stmt->execute();
@@ -20,9 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        if ($password === $user['password']) { // 改為明文比較
+        // 驗證密碼（目前使用明文比較，建議改用 password_verify）
+        if ($password === $user['password']) {
             session_start();
+            $_SESSION['loggedin'] = true;
             $_SESSION['user_id'] = $user['school_num'];
+            // 檢查是否為 admin
+            $_SESSION['is_admin'] = isset($user['is_admin']) && $user['is_admin'] == 1;
             header("Location: ../home/home.html");
         } else {
             header("Location: ./login.html?error=" . urlencode("密碼錯誤"));

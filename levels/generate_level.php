@@ -23,6 +23,12 @@ function connectDB() {
 // 連接到資料庫
 $conn = connectDB();
 
+// 檢查用戶是否已登入且為 admin
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !$_SESSION['is_admin']) {
+    header("Location: ../home/home.html?status=error&message=" . urlencode('只有管理員才能新增關卡'));
+    exit;
+}
+
 // 獲取表單資料
 $level_id = $_POST['level_id'] ?? '';
 $questionTitle = $_POST['questionTitle'] ?? '';
@@ -140,6 +146,7 @@ $htmlContent = <<<EOD
           <a href="../home/home.html">首頁</a>
           <a href="./levels.html">關卡</a>
           <a href="../leaderboard/leaderboard.html">排行榜</a>
+          <a href="./test.html">編輯/新增關卡</a> <!-- 新增的連結 -->
         </div>
       </div>
     </nav>

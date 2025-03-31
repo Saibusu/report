@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>密碼學闖關遊戲 - 關卡 #2</title>
+    <title>密碼學闖關遊戲</title>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -27,10 +27,11 @@
           <a href="../home/home.html">首頁</a>
           <a href="./levels.html">關卡</a>
           <a href="../leaderboard/leaderboard.html">排行榜</a>
+          <a href="./test.html">編輯/新增關卡</a> <!-- 新增的連結 -->
         </div>
       </div>
     </nav>
-    <!-- 導覽列結束 -->
+
     <header class="w-full max-w-5xl flex flex-col items-center mb-6 mt-20">
       <h1 class="text-4xl font-bold text-indigo-700 mb-2">密碼學闖關遊戲</h1>
     </header>
@@ -40,9 +41,7 @@
       class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
     >
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-indigo-700">
-          關卡 #2：Monoalphabetic Ciphers
-        </h2>
+        <h2 class="text-2xl font-bold text-indigo-700">關卡 #1：GCD</h2>
         <span
           class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
           >Easy</span
@@ -50,16 +49,13 @@
       </div>
       <div class="prose max-w-none">
         <p class="text-lg mb-4">
-          Use the additive cipher with key = 15 to encrypt the message “hello”
+          Find the greatest common divisor of 2740 and 1760
         </p>
 
         <div class="bg-gray-50 p-4 rounded-md mb-4">
-          <h3 class="text-md font-semibold mb-2">提示：</h3>
+          <h3 class="text-md font-semibold mb-2">指示：</h3>
           <ul class="list-disc pl-5 space-y-1">
-            <li>
-              apply the encryption algorithm to the plaintext, character by
-              character
-            </li>
+            <li>gcd (2740, 1760)</li>
           </ul>
         </div>
       </div>
@@ -104,7 +100,7 @@
       </div>
 
       <form onsubmit="return submitAnswer();" class="w-full">
-        <input type="hidden" id="level_id" name="level_id" value="2" /> <!-- 隱藏欄位，用來傳遞關卡 ID -->
+        <input type="hidden" id="level_id" name="level_id" value="1" /> <!-- 隱藏欄位，用來傳遞關卡 ID -->
         <label for="code" class="block text-gray-700 text-lg font-bold mb-2"
           >作答區</label
         >
@@ -138,9 +134,10 @@
       </form>
     </div>
 
+    <!-- 新增關卡導航按鈕 -->
     <div class="w-full max-w-5xl flex justify-between items-center mb-8">
       <a
-        href="./level1.html"
+        href="./levels.html"
         class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
       >
         <svg
@@ -157,10 +154,10 @@
             d="M15 19l-7-7 7-7"
           />
         </svg>
-        上一關
+        返回選關
       </a>
       <a
-        href="./level short3-1.html"
+        href="./level2.html"
         class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
       >
         下一關
@@ -182,6 +179,6 @@
     </div>
 
     <script src="level.js"></script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92028c53bc14b085',t:'MTc0MTk0MjQ4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92028c53ba306730',t:'MTc0MTk0MjQ4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
   </body>
 </html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>密碼學闖關遊戲 - 簡答題第八題</title>
+    <title>密碼學闖關遊戲 - 簡答題第九題</title>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -38,15 +38,18 @@
       class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
     >
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #8：凱薩密碼破解</h2>
+        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #9：AES-256 暴力破解時間估算</h2>
         <span
-          class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
-          >Easy</span
+          class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium"
+          >Hard</span
         >
       </div>
       <div class="prose max-w-none">
         <p class="text-lg mb-4">
-          已知密文 <strong>WKLQNLQJ LV IXQ!</strong> 是使用凱薩密碼加密的，請嘗試破解並找出原文。
+          假設攻擊者使用暴力破解法來破解 AES-256 (256-bit) 加密，每秒可嘗試 <strong>10^18</strong> 個密鑰。
+        </p>
+        <p class="text-lg mb-4">
+          請計算破解 AES-256 加密所需的確切時間 (以年為單位)，並填入答案(次方表示用x^y，即為x的y次方，寫數字即可)。
         </p>
       </div>
     </div>
@@ -89,7 +92,7 @@
         </div>
       </div>
       <form onsubmit="return submitAnswer();" class="w-full">
-        <input type="hidden" id="level_id" name="level_id" value="3-8" />
+        <input type="hidden" id="level_id" name="level_id" value="3-9" />
         <label for="code" class="block text-gray-700 text-lg font-bold mb-2"
           >作答區</label
         >
@@ -125,7 +128,7 @@
 
     <div class="w-full max-w-5xl flex justify-between items-center mb-8">
       <a
-        href="./level short3-7.html"
+        href="./level3-8.html"
         class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
       >
         <svg
@@ -145,7 +148,7 @@
         上一關
       </a>
       <a
-        href="./level short3-9.html"
+        href="./level3-10.html"
         class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
       >
         下一關
@@ -167,6 +170,6 @@
     </div>
 
     <script src="level.js"></script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'920293a67965bf89',t:'MTc0MTk0Mjc4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92029c5f0a8ebd30',t:'MTc0MTk0MzE0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
   </body>
 </html>

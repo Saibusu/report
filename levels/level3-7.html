@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>密碼學闖關遊戲 - 簡答題第五題</title>
+    <title>密碼學闖關遊戲 - 簡答題第七題</title>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -38,7 +38,7 @@
       class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
     >
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #5：XOR 密鑰推算</h2>
+        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #7：XOR 加密</h2>
         <span
           class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
           >Easy</span
@@ -46,8 +46,10 @@
       </div>
       <div class="prose max-w-none">
         <p class="text-lg mb-4">
-          已知某加密系統使用 XOR 加密，且密鑰長度為 4 位元 (K)。
-          給定密文 <strong>C = 1101</strong>，以及加密前的明文 <strong>M = 1010</strong>，請計算密鑰 K。
+          若明文 <strong>M</strong> 為 <strong>10110011</strong>，密鑰 <strong>K</strong> 為 <strong>11001100</strong>，請計算密文 <strong>C = M ⊕ K</strong>。
+        </p>
+        <p class="text-lg mb-4">
+          然後再對 <strong>C</strong> 進行一次 XOR 運算 <strong>C ⊕ K</strong>，寫出解密後的明文。
         </p>
       </div>
     </div>
@@ -90,7 +92,7 @@
         </div>
       </div>
       <form onsubmit="return submitAnswer();" class="w-full">
-        <input type="hidden" id="level_id" name="level_id" value="3-5" />
+        <input type="hidden" id="level_id" name="level_id" value="3-7" />
         <label for="code" class="block text-gray-700 text-lg font-bold mb-2"
           >作答區</label
         >
@@ -126,7 +128,7 @@
 
     <div class="w-full max-w-5xl flex justify-between items-center mb-8">
       <a
-        href="./level short3-4.html"
+        href="./level3-6.html"
         class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
       >
         <svg
@@ -146,7 +148,7 @@
         上一關
       </a>
       <a
-        href="./level short3-6.html"
+        href="./level3-8.html"
         class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
       >
         下一關
@@ -168,6 +170,6 @@
     </div>
 
     <script src="level.js"></script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'920293a67de54569',t:'MTc0MTk0Mjc4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'920293a68b77b05f',t:'MTc0MTk0Mjc4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
   </body>
 </html>

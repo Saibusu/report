@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>密碼學闖關遊戲 - 簡答題第三題</title>
+    <title>密碼學闖關遊戲 - 簡答題第十題</title>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -38,20 +38,16 @@
       class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
     >
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #3：Diffie-Hellman 密鑰交換</h2>
+        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #10：XOR 加密測試</h2>
         <span
           class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
           >Easy</span
         >
       </div>
       <div class="prose max-w-none">
-        <p class="text-lg mb-4">
-          假設 Alice 和 Bob 使用 Diffie-Hellman 交換密鑰，
-          公共質數 <strong>p = 23</strong>，基數 <strong>g = 5</strong>。
-        </p>
-        <p class="text-lg mb-4">
-          (1) 計算 Alice 的公開值 <strong>A = g^a mod p</strong> （Alice 的私鑰 <strong>a = 6</strong>）
-        </p>
+        <p class="text-lg mb-4">假設某系統使用 XOR 加密，密鑰長度為 3 位元 (即 K = 011)，加密了以下明文：</p>
+        <pre class="bg-gray-900 text-white p-4 rounded-md"><code>M1 = 101</code></pre>
+        <p class="text-lg mb-4">請計算對應的密文。</p>
       </div>
     </div>
 
@@ -93,7 +89,7 @@
         </div>
       </div>
       <form onsubmit="return submitAnswer();" class="w-full">
-        <input type="hidden" id="level_id" name="level_id" value="3-3" />
+        <input type="hidden" id="level_id" name="level_id" value="3-10" />
         <label for="code" class="block text-gray-700 text-lg font-bold mb-2"
           >作答區</label
         >
@@ -129,7 +125,7 @@
 
     <div class="w-full max-w-5xl flex justify-between items-center mb-8">
       <a
-        href="./level short3-2.html"
+        href="./level3-9.html"
         class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
       >
         <svg
@@ -149,10 +145,10 @@
         上一關
       </a>
       <a
-        href="./level short3-4.html"
+        href="./levels.html"
         class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
       >
-        下一關
+        返回選關
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 ml-2"

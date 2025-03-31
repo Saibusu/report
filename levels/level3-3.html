@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>密碼學闖關遊戲</title>
+    <title>密碼學闖關遊戲 - 簡答題第三題</title>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -18,45 +18,40 @@
     onload="startTimer()"
     class="text-gray-800 min-h-screen flex flex-col items-center py-6"
   >
-    <!-- 導覽列開始 -->
-    <nav class="navbar">
-      <div class="nav-container">
-        <a href="../home/home.html" class="logo">密碼學闖關遊戲</a>
-        <div class="nav-links">
-          <a href="../user/dashboard.php">用戶</a>
-          <a href="../home/home.html">首頁</a>
-          <a href="./levels.html">關卡</a>
-          <a href="../leaderboard/leaderboard.html">排行榜</a>
-        </div>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../home/home.html" class="logo">密碼學闖關遊戲</a>
+      <div class="nav-links">
+        <a href="../user/dashboard.php">用戶</a>
+        <a href="../home/home.html">首頁</a>
+        <a href="./levels.html">關卡</a>
+        <a href="../leaderboard/leaderboard.html">排行榜</a>
       </div>
-    </nav>
+    </div>
+  </nav>
 
     <header class="w-full max-w-5xl flex flex-col items-center mb-6 mt-20">
       <h1 class="text-4xl font-bold text-indigo-700 mb-2">密碼學闖關遊戲</h1>
     </header>
 
-    <!-- 題目區塊 -->
     <div
       class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
     >
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-indigo-700">關卡 #3-12：加法運算</h2>
+        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #3：Diffie-Hellman 密鑰交換</h2>
         <span
           class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
-          >簡單</span
+          >Easy</span
         >
       </div>
       <div class="prose max-w-none">
         <p class="text-lg mb-4">
-          10+20=?
+          假設 Alice 和 Bob 使用 Diffie-Hellman 交換密鑰，
+          公共質數 <strong>p = 23</strong>，基數 <strong>g = 5</strong>。
         </p>
-
-        <div class="bg-gray-50 p-4 rounded-md mb-4">
-          <h3 class="text-md font-semibold mb-2">提示：</h3>
-          <ul class="list-disc pl-5 space-y-1">
-            <li>請在答案中填入?的數字</li>
-          </ul>
-        </div>
+        <p class="text-lg mb-4">
+          (1) 計算 Alice 的公開值 <strong>A = g^a mod p</strong> （Alice 的私鑰 <strong>a = 6</strong>）
+        </p>
       </div>
     </div>
 
@@ -97,9 +92,8 @@
           分數: <span class="ml-1">0</span>
         </div>
       </div>
-
       <form onsubmit="return submitAnswer();" class="w-full">
-        <input type="hidden" id="level_id" name="level_id" value="3-12" />
+        <input type="hidden" id="level_id" name="level_id" value="3-3" />
         <label for="code" class="block text-gray-700 text-lg font-bold mb-2"
           >作答區</label
         >
@@ -135,7 +129,7 @@
 
     <div class="w-full max-w-5xl flex justify-between items-center mb-8">
       <a
-        href="./level short3-11.html"
+        href="./level3-2.html"
         class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
       >
         <svg
@@ -152,10 +146,10 @@
             d="M15 19l-7-7 7-7"
           />
         </svg>
-        返回選關
+        上一關
       </a>
       <a
-        href="./levels.html"
+        href="./level3-4.html"
         class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
       >
         下一關
@@ -177,5 +171,6 @@
     </div>
 
     <script src="level.js"></script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9202b0ebbd70452d',t:'MTc0MTk0Mzk4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
   </body>
 </html>

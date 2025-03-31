@@ -1,5 +1,5 @@
 <?php
-// 啟用 session 用來識別用戶（雖然此頁面可能不需要，但與後端一致）
+// 啟用 session 用來識別用戶
 session_start();
 
 // 引入資料庫連線
@@ -28,7 +28,7 @@ $level_id = $_POST['level_id'] ?? '';
 $questionTitle = $_POST['questionTitle'] ?? '';
 $questionDescription = $_POST['questionDescription'] ?? '';
 $hints = $_POST['hints'] ?? '';
-$correct_answer = $_POST['correct_answer'] ?? ''; // 獲取答案
+$correct_answer = $_POST['correct_answer'] ?? '';
 $difficulty = $_POST['difficulty'] ?? '簡單';
 
 // 驗證必填欄位
@@ -37,7 +37,7 @@ if (empty($level_id) || empty($questionTitle) || empty($questionDescription) || 
     exit;
 }
 
-// 記錄接收到的數據到日誌（用於調試）
+// 記錄接收到的數據到日誌
 error_log("Received data: level_id=$level_id, correct_answer=$correct_answer");
 
 // 檢查資料庫中是否已存在該 level_id
@@ -52,17 +52,21 @@ if ($result->num_rows > 0) {
     exit;
 }
 
-// 插入答案到資料庫
-$sql = "INSERT INTO answers (level_id, correct_answer) VALUES (?, ?)";
+// 插入答案和類型到資料庫
+$level_parts = explode('-', $level_id);
+$chapter = $level_parts[0];
+$level_number = intval($level_parts[1]);
+$type = '簡答題'; // 預設為簡答題
+$sql = "INSERT INTO answers (level_id, correct_answer, type) VALUES (?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $level_id, $correct_answer); // level_id 和 correct_answer 都是 VARCHAR，使用 "ss"
+$stmt->bind_param("sss", $level_id, $correct_answer, $type);
 if (!$stmt->execute()) {
     error_log("Database insert failed: " . $stmt->error);
     header("Location: ../home/home.html?status=error&message=" . urlencode('無法將答案記錄到資料庫: ' . $stmt->error));
     exit;
 }
 
-// 根據 level_id 生成檔案名稱（例如：level short3-1.html）
+// 根據 level_id 生成檔案名稱
 $filename = __DIR__ . '/level' . $level_id . '.html';
 
 // 檢查檔案是否已存在
@@ -80,18 +84,11 @@ if (!is_dir($directory)) {
     }
 }
 
-// 動態生成上一關和下一關的連結，並檢查檔案是否存在
-$level_parts = explode('-', $level_id);
-$chapter = $level_parts[0]; // 例如 "3"
-$level_number = intval($level_parts[1]); // 例如 "1"
-
-// 計算上一關和下一關的檔案名稱
-$prev_level_file = $level_number > 1 ? __DIR__ . "/level short{$chapter}-" . ($level_number - 1) . ".html" : null;
-$next_level_file = __DIR__ . "/level short{$chapter}-" . ($level_number + 1) . ".html";
-
-// 檢查檔案是否存在，決定連結
-$prev_level = $prev_level_file && file_exists($prev_level_file) ? "level short{$chapter}-" . ($level_number - 1) . ".html" : "levels.html";
-$next_level = file_exists($next_level_file) ? "level short{$chapter}-" . ($level_number + 1) . ".html" : "levels.html";
+// 動態生成上一關和下一關的連結
+$prev_level_file = $level_number > 1 ? __DIR__ . "/level{$chapter}-" . ($level_number - 1) . ".html" : null;
+$next_level_file = __DIR__ . "/level{$chapter}-" . ($level_number + 1) . ".html";
+$prev_level = $prev_level_file && file_exists($prev_level_file) ? "level{$chapter}-" . ($level_number - 1) . ".html" : "levels.html";
+$next_level = file_exists($next_level_file) ? "level{$chapter}-" . ($level_number + 1) . ".html" : "levels.html";
 
 // 根據難度設置標籤樣式
 $difficulty_class = '';
@@ -109,10 +106,10 @@ switch ($difficulty) {
         $difficulty_class = 'bg-red-100 text-red-800';
         break;
     default:
-        $difficulty_class = 'bg-indigo-100 text-indigo-800'; // 預設為藍色
+        $difficulty_class = 'bg-indigo-100 text-indigo-800';
 }
 
-// 生成與 level short3-1.html 一致的 HTML 內容
+// 生成 HTML 內容
 $htmlContent = <<<EOD
 <!DOCTYPE html>
 <html lang="en">
@@ -299,7 +296,7 @@ EOD;
 
 // 儲存檔案
 if (file_put_contents($filename, $htmlContent) !== false) {
-    header("Location: ../home/home.html?status=success&message=" . urlencode('關卡生成成功！檔案名稱：level short' . $level_id . '.html'));
+    header("Location: ../home/home.html?status=success&message=" . urlencode('關卡生成成功！檔案名稱：' . basename($filename)));
 } else {
     header("Location: ../home/home.html?status=error&message=" . urlencode('無法寫入檔案'));
 }

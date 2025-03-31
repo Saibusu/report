@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>密碼學闖關遊戲 - 簡答題第六題</title>
+    <title>密碼學闖關遊戲 - 簡答題第二題</title>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -38,7 +38,7 @@
       class="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6 mb-6 challenge-card"
     >
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #6：凱薩加密法</h2>
+        <h2 class="text-2xl font-bold text-indigo-700">簡答題 #2：XOR 加密</h2>
         <span
           class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium"
           >Easy</span
@@ -46,7 +46,7 @@
       </div>
       <div class="prose max-w-none">
         <p class="text-lg mb-4">
-          已知明文為 <strong>HELLO</strong>，使用凱薩加密法 (Caesar Cipher) 進行加密，密鑰為 <strong>3</strong>，請計算出加密後的密文。
+          XOR 加密的特性是：如果我們用相同的密鑰對密文再次進行 XOR 運算，則會還原回____。
         </p>
       </div>
     </div>
@@ -89,7 +89,7 @@
         </div>
       </div>
       <form onsubmit="return submitAnswer();" class="w-full">
-        <input type="hidden" id="level_id" name="level_id" value="3-6" />
+        <input type="hidden" id="level_id" name="level_id" value="3-2" />
         <label for="code" class="block text-gray-700 text-lg font-bold mb-2"
           >作答區</label
         >
@@ -125,7 +125,7 @@
 
     <div class="w-full max-w-5xl flex justify-between items-center mb-8">
       <a
-        href="./level short3-5.html"
+        href="./level3-1.html"
         class="flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200"
       >
         <svg
@@ -145,7 +145,7 @@
         上一關
       </a>
       <a
-        href="./level short3-7.html"
+        href="./level3-3.html"
         class="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200"
       >
         下一關
@@ -167,6 +167,6 @@
     </div>
 
     <script src="level.js"></script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'920293a68aa3c022',t:'MTc0MTk0Mjc4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'920293a6881fbca8',t:'MTc0MTk0Mjc4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
   </body>
 </html>

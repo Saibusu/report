@@ -164,8 +164,7 @@
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const chapterButtonsContainer =
-          document.getElementById("chapter-buttons");
+        const chapterButtonsContainer = document.getElementById("chapter-buttons");
         const choiceLevelButtonsContainer = document.getElementById(
           "choice-level-buttons"
         );
@@ -177,107 +176,103 @@
           "short-answer-container"
         );
 
-        const chapters = [
-          { chapter: "1", text: "第一章" },
-          { chapter: "2", text: "第二章" },
-          { chapter: "3", text: "第三章" },
-          { chapter: "4", text: "第四章" },
-          { chapter: "5", text: "第五章" },
-          { chapter: "6", text: "第六章" },
-          { chapter: "7", text: "第七章" },
-          { chapter: "8", text: "第八章" },
-          { chapter: "9", text: "第九章" },
-        ];
+        // 從後端獲取章節和關卡數據
+        function fetchLevels() {
+          fetch('./get_levels.php')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+              }
+              return response.text(); // 先獲取純文字回應
+            })
+            .then(text => {
+              try {
+                const data = JSON.parse(text); // 手動解析 JSON
+                console.log('Received data:', data); // 調試：記錄接收到的數據
+                const chapters = data.chapters || [];
+                const levels = data.levels || {};
 
-        const levels = {
-          1: [
-            { level: "1", text: "第一關", type: "簡答題", url: "level1.html" },
-          ],
-          2: [
-            { level: "1", text: "第一關", type: "簡答題", url: "level1.html" },
-            { level: "2", text: "第二關", type: "簡答題", url: "level2.html" },
-          ],
-          3: [
-            {level: "1",text: "第一關",type: "選擇題",url: "level choice3-1.html",},
-            {level: "2",text: "第二關",type: "選擇題",url: "level choice3-2.html",},
-            {level: "3",text: "第三關",type: "選擇題",url: "level choice3-3.html",},
-            {level: "4",text: "第四關",type: "選擇題", url: "level choice3-4.html",},
-            {level: "5",text: "第一關",type: "簡答題",url: "level short3-1.html",},
-            {level: "6",text: "第二關",type: "簡答題",url: "level short3-2.html",},
-            {level: "7",text: "第三關",type: "簡答題",url: "level short3-3.html",},
-            {level: "8",text: "第四關",type: "簡答題",url: "level short3-4.html",},
-            {level: "9",text: "第五關",type: "簡答題",url: "level short3-5.html",},
-            {level: "10",text: "第六關",type: "簡答題",url: "level short3-6.html",},
-            {level: "11",text: "第七關",type: "簡答題",url: "level short3-7.html",},
-            {level: "12",text: "第八關",type: "簡答題",url: "level short3-8.html",},
-            {level: "13",text: "第九關",type: "簡答題",url: "level short3-9.html",},
-            {level: "14",text: "第十關",type: "簡答題",url: "level short3-10.html",},
-          ],
-        };
+                // 確保 chapters 和 levels 存在
+                if (!chapters.length) {
+                  console.warn('No chapters data received');
+                  chapterButtonsContainer.innerHTML = '<p>暫無章節數據</p>';
+                  return;
+                }
+                if (Object.keys(levels).length === 0) {
+                  console.warn('No levels data received');
+                  chapterButtonsContainer.innerHTML += '<p>暫無關卡數據</p>';
+                }
 
-        function updateLevels(chapter) {
-          // Clear previous content and hide containers
-          choiceLevelButtonsContainer.innerHTML = "";
-          shortAnswerLevelButtonsContainer.innerHTML = "";
-          choiceContainer.style.display = "none";
-          shortAnswerContainer.style.display = "none";
-
-          // 只有當此章節在levels物件中定義了關卡時才繼續
-          if (levels[chapter]) {
-            // Filter levels by type
-            const choiceLevels = levels[chapter].filter(
-              (lvl) => lvl.type === "選擇題"
-            );
-            const shortAnswerLevels = levels[chapter].filter(
-              (lvl) => lvl.type === "簡答題"
-            );
-
-            // Populate multiple-choice levels
-            if (choiceLevels.length > 0) {
-              choiceContainer.style.display = "block";
-              choiceLevels.forEach((lvl) => {
-                const button = document.createElement("button");
-                button.classList.add("level-button");
-                button.setAttribute("data-level", lvl.level);
-                button.textContent = lvl.text;
-                button.addEventListener("click", () => {
-                  window.location.href = lvl.url;
+                // 生成章節按鈕
+                chapters.forEach((chp) => {
+                  const button = document.createElement("button");
+                  button.classList.add("chapter-button");
+                  button.textContent = chp.text;
+                  button.addEventListener("click", () => updateLevels(chp.chapter));
+                  chapterButtonsContainer.appendChild(button);
                 });
-                choiceLevelButtonsContainer.appendChild(button);
-              });
-            }
 
-            // Populate short-answer levels
-            if (shortAnswerLevels.length > 0) {
-              shortAnswerContainer.style.display = "block";
-              shortAnswerLevels.forEach((lvl) => {
-                const button = document.createElement("button");
-                button.classList.add("level-button");
-                button.setAttribute("data-level", lvl.level);
-                button.textContent = lvl.text;
-                button.addEventListener("click", () => {
-                  window.location.href = lvl.url;
-                });
-                shortAnswerLevelButtonsContainer.appendChild(button);
-              });
-            }
-          }
+                // 更新關卡
+                function updateLevels(chapter) {
+                  choiceLevelButtonsContainer.innerHTML = "";
+                  shortAnswerLevelButtonsContainer.innerHTML = "";
+                  choiceContainer.style.display = "none";
+                  shortAnswerContainer.style.display = "none";
+
+                  if (levels[chapter]) {
+                    const choiceLevels = levels[chapter].filter(lvl => lvl.type === "選擇題");
+                    const shortAnswerLevels = levels[chapter].filter(lvl => lvl.type === "簡答題");
+
+                    if (choiceLevels.length > 0) {
+                      choiceContainer.style.display = "block";
+                      choiceLevels.forEach((lvl) => {
+                        const button = document.createElement("button");
+                        button.classList.add("level-button");
+                        button.setAttribute("data-level", lvl.level);
+                        button.textContent = lvl.text;
+                        button.addEventListener("click", () => {
+                          window.location.href = lvl.url;
+                        });
+                        choiceLevelButtonsContainer.appendChild(button);
+                      });
+                    }
+
+                    if (shortAnswerLevels.length > 0) {
+                      shortAnswerContainer.style.display = "block";
+                      shortAnswerLevels.forEach((lvl) => {
+                        const button = document.createElement("button");
+                        button.classList.add("level-button");
+                        button.setAttribute("data-level", lvl.level);
+                        button.textContent = lvl.text;
+                        button.addEventListener("click", () => {
+                          window.location.href = lvl.url;
+                        });
+                        shortAnswerLevelButtonsContainer.appendChild(button);
+                      });
+                    }
+                  } else {
+                    console.log(`No levels found for chapter ${chapter}`);
+                  }
+                }
+
+                // 初始狀態
+                choiceContainer.style.display = "none";
+                shortAnswerContainer.style.display = "none";
+              } catch (e) {
+                console.error('Invalid JSON response:', e, text);
+                chapterButtonsContainer.innerHTML = '<p>解析數據失敗，請檢查伺服器</p>';
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching levels:', error);
+              chapterButtonsContainer.innerHTML = '<p>加載關卡失敗，請檢查網路或伺服器</p>';
+            });
         }
 
-        chapters.forEach((chp) => {
-          const button = document.createElement("button");
-          button.classList.add("chapter-button");
-          button.textContent = chp.text;
-          button.addEventListener("click", () => {
-            updateLevels(chp.chapter);
-          });
-          chapterButtonsContainer.appendChild(button);
-        });
-
-        // Initially, no levels are shown
-        choiceContainer.style.display = "none";
-        shortAnswerContainer.style.display = "none";
+        // 頁面加載時獲取數據
+        fetchLevels();
       });
     </script>
+    <!-- 移除 Cloudflare 腳本以避免 404 錯誤 -->
   </body>
 </html>
